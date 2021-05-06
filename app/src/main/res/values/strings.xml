@@ -2,4 +2,6 @@
     <string name="app_name">ShoppingListApp</string>
     <string name="home_bar_title">Shopping lists</string>
     <string name="add_shopping_list_button">Add shopping list</string>
+    <string name="shopping_lists">Shopping Lists</string>
+    <string name="archived_shopping_lists">Archived Shopping Lists</string>
 </resources>
