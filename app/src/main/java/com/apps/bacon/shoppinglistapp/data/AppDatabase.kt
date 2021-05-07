@@ -8,6 +8,8 @@ import androidx.room.TypeConverters
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.data.converters.DateConverter
+import com.apps.bacon.shoppinglistapp.data.dao.GroceryDao
+import com.apps.bacon.shoppinglistapp.data.dao.ShoppingListDao
 
 @Database(
     entities = [ShoppingList::class, Grocery::class],
