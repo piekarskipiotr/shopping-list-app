@@ -4,4 +4,8 @@
     <string name="add_shopping_list_button">Add shopping list</string>
     <string name="shopping_lists">Shopping Lists</string>
     <string name="archived_shopping_lists">Archived Shopping Lists</string>
+    <string name="shopping_list_icon">Shopping list icon</string>
+    <string name="grocery_icon">Grocery icon</string>
+    <string name="grocery_done_status_icon">Grocery done status icon</string>
+    <string name="shopping_list_item_second_text_prefix">Groceries done</string>
 </resources>
