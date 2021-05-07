@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
+import com.apps.bacon.shoppinglistapp.data.converters.DateConverter
 
 @Database(
     entities = [ShoppingList::class, Grocery::class],
