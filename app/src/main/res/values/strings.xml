@@ -4,4 +4,5 @@
     <string name="add_shopping_list_button">Add shopping list</string>
     <string name="shopping_lists">Shopping Lists</string>
     <string name="archived_shopping_lists">Archived Shopping Lists</string>
+    <string name="shopping_list_icon">Shopping list icon</string>
 </resources>
