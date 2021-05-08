@@ -6,7 +6,7 @@ import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 
 @Dao
 interface GroceryDao {
-    @Query("SELECT * FROM grocery WHERE shopping_list_id = :shoppingListId")
+    @Query("SELECT * FROM grocery WHERE shopping_list_id = :shoppingListId ORDER BY is_done = 1")
     fun getGroceryForShoppingList(shoppingListId: Int): LiveData<List<Grocery>>
 
     @Query("SELECT COUNT(*) FROM grocery WHERE shopping_list_id = :shoppingListId")
