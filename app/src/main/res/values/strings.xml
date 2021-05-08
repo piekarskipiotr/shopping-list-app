@@ -8,4 +8,7 @@
     <string name="grocery_icon">Grocery icon</string>
     <string name="grocery_done_status_icon">Grocery done status icon</string>
     <string name="shopping_list_item_second_text_prefix">Groceries done</string>
+    <string name="add_grocery_button">Add grocery button</string>
+    <string name="go_back_to_home_activity">Go back to home activity</string>
+    <string name="grocery_bar_title">Shopping list details</string>
 </resources>

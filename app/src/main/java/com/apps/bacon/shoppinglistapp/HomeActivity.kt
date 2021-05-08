@@ -1,5 +1,6 @@
 package com.apps.bacon.shoppinglistapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -113,7 +114,15 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         }
     }
 
-    override fun onShoppingListClick(shoppingListId: Int) {
-        //TODO: start activity
+    override fun onShoppingListClick(shoppingListId: Int, isArchived: Boolean) {
+        intent = Intent(this, GroceryActivity::class.java)
+        intent.putExtra(SHOPPING_LIST_ID_KEY, shoppingListId)
+        intent.putExtra(IS_SHOPPING_LIST_ARCHIVED_KEY, isArchived)
+        startActivity(intent)
+    }
+
+    companion object {
+        const val SHOPPING_LIST_ID_KEY = "SHOPPING_LIST_ID"
+        const val IS_SHOPPING_LIST_ARCHIVED_KEY = "IS_SHOPPING_LIST_ARCHIVED"
     }
 }

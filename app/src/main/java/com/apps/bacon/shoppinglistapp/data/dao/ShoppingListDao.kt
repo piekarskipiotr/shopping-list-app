@@ -6,8 +6,8 @@ import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 
 @Dao
 interface ShoppingListDao {
-    @Query("SELECT * FROM shopping_list WHERE is_archived = 0 ORDER BY date DESC")
-    fun getActiveShoppingLists(): LiveData<List<ShoppingList>>
+    @Query("SELECT * FROM shopping_list WHERE id = :shoppingListId")
+    fun getShoppingListById(shoppingListId: Int): ShoppingList
 
     @Query("SELECT * FROM shopping_list WHERE is_archived = 1 ORDER BY date DESC")
     fun getArchivedShoppingLists(): LiveData<List<ShoppingList>>
