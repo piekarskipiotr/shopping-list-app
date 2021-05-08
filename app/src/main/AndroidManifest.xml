@@ -11,8 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShoppingListApp"
         tools:ignore="AllowBackup">
-        <activity android:name=".HomeActivity"/>
-        <activity android:name=".MainActivity"
+        <activity android:name=".GroceryActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

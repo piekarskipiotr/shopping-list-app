@@ -26,7 +26,7 @@ class ShoppingListsAdapter constructor(
         }
 
         override fun onClick(p0: View?) {
-            listener.onShoppingListClick(data[adapterPosition].id)
+            listener.onShoppingListClick(data[adapterPosition].id, data[adapterPosition].isArchived)
         }
     }
 
@@ -60,6 +60,6 @@ class ShoppingListsAdapter constructor(
     }
 
     interface OnShoppingListClickListener {
-        fun onShoppingListClick(shoppingListId: Int)
+        fun onShoppingListClick(shoppingListId: Int, isArchived: Boolean)
     }
 }
