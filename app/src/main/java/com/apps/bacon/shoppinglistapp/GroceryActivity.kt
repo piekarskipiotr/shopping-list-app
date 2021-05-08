@@ -35,7 +35,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         //get shoppingList object
         shoppingList = groceryViewModel.getShoppingList(shoppingListId)
 
-        groceryViewModel.getGroceryForShoppingList(shoppingListId).observe(this, {
+        groceryViewModel.getGroceryForShoppingList(shoppingListId).observe(this) {
             groceryAdapter.updateData(it)
 
             //check if this is new empty list (all groceries = 0)
@@ -43,7 +43,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
                 false
             else
                 shoppingList.allGroceries == shoppingList.doneGroceries
-        })
+        }
 
         if (isShoppingListIdArchived)
             disableAddingButton()

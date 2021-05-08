@@ -15,7 +15,6 @@ class ShoppingListsAdapter constructor(
     private val context: Context
 ) : RecyclerView.Adapter<ShoppingListsAdapter.ViewHolder>() {
     private var data: List<ShoppingList> = ArrayList()
-    private var groceriesNumbers: List<List<Int>> = ArrayList()
 
     inner class ViewHolder(view: ShoppingListItemBinding) : RecyclerView.ViewHolder(view.root), View.OnClickListener {
         val title = view.title
@@ -38,14 +37,9 @@ class ShoppingListsAdapter constructor(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val shoppingList = data[position]
-        val shoppingListGroceriesNumbers = groceriesNumbers[position]
-
-        //at index 0 all at 1 done
-        val allGrocery = shoppingListGroceriesNumbers[0]
-        val doneGrocery = shoppingListGroceriesNumbers[1]
 
         holder.title.text = shoppingList.name
-        holder.secondText.text = context.resources.getString(R.string.shopping_list_item_second_text_prefix) + " $doneGrocery/$allGrocery"
+        holder.secondText.text = context.resources.getString(R.string.shopping_list_item_second_text_prefix) + " ${shoppingList.doneGroceries}/${shoppingList.allGroceries}"
     }
 
     override fun getItemCount() = data.size
@@ -53,10 +47,6 @@ class ShoppingListsAdapter constructor(
     fun updateData(dataList: List<ShoppingList>) {
         data = dataList
         notifyDataSetChanged()
-    }
-
-    fun updateGroceriesNumbers(dataList: List<List<Int>>) {
-        groceriesNumbers = dataList
     }
 
     interface OnShoppingListClickListener {

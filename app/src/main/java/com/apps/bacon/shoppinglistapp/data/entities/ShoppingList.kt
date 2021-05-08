@@ -14,6 +14,12 @@ data class ShoppingList(
     @ColumnInfo(name = "name")
     var name: String,
 
+    @ColumnInfo(name = "done_groceries")
+    var doneGroceries: Int,
+
+    @ColumnInfo(name = "all_groceries")
+    var allGroceries: Int,
+
     @ColumnInfo(name = "date")
     var date: Date,
 

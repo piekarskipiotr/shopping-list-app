@@ -1,37 +1,28 @@
 package com.apps.bacon.shoppinglistapp.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
-import com.apps.bacon.shoppinglistapp.data.repository.GroceryRepository
 import com.apps.bacon.shoppinglistapp.data.repository.ShoppingListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val shoppingListRepository: ShoppingListRepository,
-    private val groceryRepository: GroceryRepository
+    private val shoppingListRepository: ShoppingListRepository
 ) : ViewModel() {
-    fun getActiveShoppingLists() = shoppingListRepository.getActiveShoppingLists()
-
-    fun getArchivedShoppingLists() = shoppingListRepository.getArchivedShoppingLists()
-
-    fun getNumberOfDoneGroceryInShoppingList(shoppingListId: Int) = groceryRepository.getNumberOfDoneGroceryInShoppingList(shoppingListId)
-
-    fun getNumberOfAllGroceryInShoppingList(shoppingListId: Int) = groceryRepository.getNumberOfAllGroceryInShoppingList(shoppingListId)
-
-    fun updateShoppingList(shoppingList: ShoppingList) = CoroutineScope(Dispatchers.Default).launch {
-        shoppingListRepository.update(shoppingList)
+    var selectedTab = MutableLiveData<Int>().apply {
+        //init value on start
+        value = 0
     }
 
-    fun deleteShoppingList(shoppingList: ShoppingList) = CoroutineScope(Dispatchers.Default).launch {
-        shoppingListRepository.delete(shoppingList)
+    fun setSelectedTab(selectedTabI: Int) {
+        selectedTab.value = selectedTabI
     }
 
-    fun insertShoppingList(shoppingList: ShoppingList) = CoroutineScope(Dispatchers.Default).launch {
-        shoppingListRepository.insert(shoppingList)
+    val shoppingListFilteredByArchived: LiveData<List<ShoppingList>> = Transformations.switchMap(selectedTab) {
+        shoppingListRepository.getShoppingListsByArchivedStatus(it)
     }
 }

@@ -18,51 +18,24 @@ import java.util.*
 class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var shoppingListAdapter: ShoppingListsAdapter
+    val homeViewModel: HomeViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        val homeViewModel: HomeViewModel by viewModels()
         initRecyclerView()
+        initTabs()
 
+        homeViewModel.shoppingListFilteredByArchived.observe(this, {
+            shoppingListAdapter.updateData(it)
+        })
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
-                    when(tab.position){
-                        0 -> {
-                            homeViewModel.getArchivedShoppingLists().removeObservers(this@HomeActivity)
-                            homeViewModel.getActiveShoppingLists().observe(this@HomeActivity, {
-                                val activeShoppingListsGroceryNumbers: MutableList<MutableList<Int>> = mutableListOf()
-                                for (shoppingList in it){
-                                    val list = mutableListOf(
-                                        homeViewModel.getNumberOfAllGroceryInShoppingList(shoppingList.id),
-                                        homeViewModel.getNumberOfDoneGroceryInShoppingList(shoppingList.id)
-                                    )
-                                    activeShoppingListsGroceryNumbers.add(list)
-                                }
-                                shoppingListAdapter.updateData(it)
-                                shoppingListAdapter.updateGroceriesNumbers(activeShoppingListsGroceryNumbers)
-                            })
-                        }
-
-                        1 -> {
-                            homeViewModel.getActiveShoppingLists().removeObservers(this@HomeActivity)
-                            homeViewModel.getArchivedShoppingLists().observe(this@HomeActivity, {
-                                val archivedShoppingListsGroceryNumbers: MutableList<MutableList<Int>> = mutableListOf()
-                                for (shoppingList in it){
-                                    val list = mutableListOf(
-                                        homeViewModel.getNumberOfAllGroceryInShoppingList(shoppingList.id),
-                                        homeViewModel.getNumberOfDoneGroceryInShoppingList(shoppingList.id)
-                                    )
-                                    archivedShoppingListsGroceryNumbers.add(list)
-                                }
-                                shoppingListAdapter.updateData(it)
-                                shoppingListAdapter.updateGroceriesNumbers(archivedShoppingListsGroceryNumbers)
-                            })
-                        }
-                    }
+                    homeViewModel.setSelectedTab(tab.position)
                 }
             }
 
@@ -73,14 +46,11 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
             override fun onTabReselected(tab: TabLayout.Tab?) {
 
             }
-
         })
 
         binding.addShoppingListButton.setOnClickListener {
-            //TODO: open the form for adding a new list
+            //TODO: insert new shopping list
         }
-
-        initTabs()
     }
 
     private fun initRecyclerView() {
@@ -104,6 +74,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
             ContextCompat.getDrawable(this@HomeActivity, R.drawable.ic_round_archive)
         )
 
+        //add tabs
         val size = listOfTitles.size - 1
         for (i in 0..size) {
             val isSelected = i == 0
@@ -112,6 +83,11 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
             }
             binding.tabLayout.addTab(tab, i, isSelected)
         }
+
+        //select tab on screen rotation
+        homeViewModel.selectedTab.value?.let {
+            binding.tabLayout.getTabAt(it)
+        }?.select()
     }
 
     override fun onShoppingListClick(shoppingListId: Int, isArchived: Boolean) {

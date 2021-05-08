@@ -9,11 +9,9 @@ class ShoppingListRepository @Inject constructor(
 ) {
     fun getShoppingListById(shoppingListId: Int) = database.shoppingListDao().getShoppingListById(shoppingListId)
 
-    fun getArchivedShoppingLists() = database.shoppingListDao().getArchivedShoppingLists()
+    fun getShoppingListsByArchivedStatus(selectedTab: Int) = database.shoppingListDao().getShoppingListsByArchivedStatus(selectedTab)
 
     suspend fun insert(shoppingList: ShoppingList) = database.shoppingListDao().insert(shoppingList)
 
     suspend fun update(shoppingList: ShoppingList) = database.shoppingListDao().update(shoppingList)
-
-    suspend fun delete(shoppingList: ShoppingList) = database.shoppingListDao().delete(shoppingList)
 }
