@@ -24,12 +24,24 @@ class GroceryViewModel @Inject constructor(
         shoppingListRepository.update(shoppingList)
     }
 
-    fun insert(grocery: Grocery) = CoroutineScope(Dispatchers.Default).launch {
+    fun insertNewGrocery(groceryName: String, amount: Int, shoppingListId: Int) = CoroutineScope(Dispatchers.Default).launch {
+        val grocery = Grocery(
+            0,
+            groceryName,
+            amount,
+            false,
+            shoppingListId
+        )
         groceryRepository.insert(grocery)
     }
 
     private fun updateGrocery(grocery: Grocery) = CoroutineScope(Dispatchers.Default).launch {
         groceryRepository.update(grocery)
+    }
+
+    fun updateShoppingListAllGroceriesValue(shoppingList: ShoppingList) {
+        shoppingList.apply { allGroceries += 1 }
+        updateShoppingList(shoppingList)
     }
 
     fun updateShoppingListDoneGroceriesValue(shoppingList: ShoppingList, isDone: Boolean) {

@@ -15,11 +15,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListener {
+class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListener, GroceryDialog.GroceryDialogListener {
     private lateinit var binding: ActivityGroceryBinding
     private lateinit var groceryAdapter: GroceryAdapter
     private lateinit var shoppingList: ShoppingList
     private val groceryViewModel: GroceryViewModel by viewModels()
+    private var shoppingListId by Delegates.notNull<Int>()
     private var isShoppingListIdArchived by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +29,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         val view = binding.root
         setContentView(view)
         //get extras
-        val shoppingListId = intent.extras!!.getInt(SHOPPING_LIST_ID_KEY)
+        shoppingListId = intent.extras!!.getInt(SHOPPING_LIST_ID_KEY)
         isShoppingListIdArchived = intent.extras!!.getBoolean(IS_SHOPPING_LIST_ARCHIVED_KEY)
 
         initRecyclerView(isShoppingListIdArchived)
@@ -49,13 +50,18 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
             disableAddingButton()
         else {
             binding.addGroceryButton.setOnClickListener {
-                //TODO: insert new grocery
+                openDialog()
             }
         }
 
         binding.backButton.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    private fun openDialog() {
+        val groceryDialog: GroceryDialog = GroceryDialog().newInstance()
+        groceryDialog.show(supportFragmentManager, GROCERY_DIALOG_TAG)
     }
 
     private fun initRecyclerView(isArchived: Boolean) {
@@ -81,6 +87,11 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         groceryViewModel.updateGroceryStatus(grocery)
     }
 
+    override fun onInsertButtonClick(groceryName: String, amount: Int) {
+        groceryViewModel.updateShoppingListAllGroceriesValue(shoppingList)
+        groceryViewModel.insertNewGrocery(groceryName, amount, shoppingListId)
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         if (shoppingList.isArchived != isShoppingListIdArchived) {
@@ -92,5 +103,6 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         const val SHOPPING_LIST_ID_KEY = "SHOPPING_LIST_ID"
         const val IS_SHOPPING_LIST_ARCHIVED_KEY = "IS_SHOPPING_LIST_ARCHIVED"
         const val DISABLE_ALPHA = 0.7f
+        const val GROCERY_DIALOG_TAG = "insert new grocery dialog"
     }
 }

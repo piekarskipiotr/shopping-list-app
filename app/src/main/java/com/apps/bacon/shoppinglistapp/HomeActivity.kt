@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener {
+class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener, ShoppingListDialog.ShoppingListDialogListener {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var shoppingListAdapter: ShoppingListsAdapter
     val homeViewModel: HomeViewModel by viewModels()
@@ -49,8 +49,13 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         })
 
         binding.addShoppingListButton.setOnClickListener {
-            //TODO: insert new shopping list
+            openDialog()
         }
+    }
+
+    private fun openDialog() {
+        val shoppingListDialog: ShoppingListDialog = ShoppingListDialog().newInstance()
+        shoppingListDialog.show(supportFragmentManager, SHOPPING_LIST_DIALOG_TAG)
     }
 
     private fun initRecyclerView() {
@@ -97,8 +102,13 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         startActivity(intent)
     }
 
+    override fun onInsertButtonClick(shoppingListName: String) {
+        homeViewModel.insertNewShoppingList(shoppingListName)
+    }
+
     companion object {
         const val SHOPPING_LIST_ID_KEY = "SHOPPING_LIST_ID"
         const val IS_SHOPPING_LIST_ARCHIVED_KEY = "IS_SHOPPING_LIST_ARCHIVED"
+        const val SHOPPING_LIST_DIALOG_TAG = "insert new shopping list dialog"
     }
 }
