@@ -11,4 +11,14 @@
     <string name="add_grocery_button">Add grocery button</string>
     <string name="go_back_to_home_activity">Go back to home activity</string>
     <string name="grocery_bar_title">Shopping list details</string>
+    <string name="shopping_list_dialog_title">Add new shopping list</string>
+    <string name="grocery_dialog_title">Add new grocery to the list</string>
+    <string name="shopping_list_name">Shopping list name</string>
+    <string name="grocery_name">Grocery name</string>
+    <string name="grocery_amount">Amount</string>
+    <string name="shopping_list_added">Shopping list has been added!</string>
+    <string name="grocery_added">Grocery has been added!</string>
+    <string name="name_error_message">Field should contain at least 1 letter and cannot: contain special characters, be empty</string>
+    <string name="amount_error_message">Field cannot: contain special characters, be empty, be equal to 0</string>
+    <string name="add">Add</string>
 </resources>
