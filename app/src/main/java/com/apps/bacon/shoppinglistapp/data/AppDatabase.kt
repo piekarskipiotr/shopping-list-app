@@ -5,11 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.apps.bacon.shoppinglistapp.data.entities.Grocery
-import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.apps.bacon.shoppinglistapp.data.converters.DateConverter
 import com.apps.bacon.shoppinglistapp.data.dao.GroceryDao
 import com.apps.bacon.shoppinglistapp.data.dao.ShoppingListDao
+import com.apps.bacon.shoppinglistapp.data.entities.Grocery
+import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 @Database(
     entities = [ShoppingList::class, Grocery::class],
@@ -36,6 +41,16 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
+                    .addCallback(object : RoomDatabase.Callback() {
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            super.onCreate(db)
+                            CoroutineScope(Dispatchers.Default).launch {
+                                instance!!.shoppingListDao().insert(ShoppingList(1, "Example list", 1, 2, Date(), false))
+                                instance!!.groceryDao().insert(Grocery(0, "Banana", 7, false, 1))
+                                instance!!.groceryDao().insert(Grocery(0, "Blueberry", 47, true, 1))
+                            }
+                        }
+                    })
                     .build()
             return instance!!
         }
