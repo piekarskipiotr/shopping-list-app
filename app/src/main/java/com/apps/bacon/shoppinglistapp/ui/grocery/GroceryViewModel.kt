@@ -1,12 +1,12 @@
 package com.apps.bacon.shoppinglistapp.ui.grocery
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.data.repository.GroceryRepository
 import com.apps.bacon.shoppinglistapp.data.repository.ShoppingListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,11 +20,11 @@ class GroceryViewModel @Inject constructor(
 
     fun getGroceryForShoppingList(shoppingListId: Int) = groceryRepository.getGroceryForShoppingList(shoppingListId)
 
-    private fun updateShoppingList(shoppingList: ShoppingList) = CoroutineScope(Dispatchers.Default).launch {
+    private fun updateShoppingList(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
         shoppingListRepository.update(shoppingList)
     }
 
-    fun insertNewGrocery(groceryName: String, amount: Int, shoppingListId: Int) = CoroutineScope(Dispatchers.Default).launch {
+    fun insertNewGrocery(groceryName: String, amount: Int, shoppingListId: Int) = viewModelScope.launch(Dispatchers.Default) {
         val grocery = Grocery(
             0,
             groceryName,
@@ -35,7 +35,7 @@ class GroceryViewModel @Inject constructor(
         groceryRepository.insert(grocery)
     }
 
-    private fun updateGrocery(grocery: Grocery) = CoroutineScope(Dispatchers.Default).launch {
+    private fun updateGrocery(grocery: Grocery) = viewModelScope.launch(Dispatchers.Default) {
         groceryRepository.update(grocery)
     }
 

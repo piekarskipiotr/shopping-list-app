@@ -1,13 +1,9 @@
 package com.apps.bacon.shoppinglistapp.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.data.repository.ShoppingListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -26,7 +22,7 @@ class HomeViewModel @Inject constructor(
         selectedTab.value = selectedTabI
     }
 
-    fun insertNewShoppingList(shoppingListName: String) = CoroutineScope(Dispatchers.Default).launch {
+    fun insertNewShoppingList(shoppingListName: String) = viewModelScope.launch(Dispatchers.Default) {
         val shoppingList = ShoppingList(
             0,
             shoppingListName,
