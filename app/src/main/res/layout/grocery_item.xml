@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="horizontal"
+    tools:ignore="UnusedAttribute">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_round_shopping_basket"
         android:layout_gravity="center"
+        android:contentDescription="@string/grocery_icon"
         android:paddingStart="30dp"
         android:paddingTop="25dp"
-        android:paddingBottom="25dp"
         android:paddingEnd="30dp"
-        android:contentDescription="@string/grocery_icon" />
+        android:paddingBottom="25dp"
+        android:src="@drawable/ic_round_shopping_basket" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -26,25 +31,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/greenMain"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/secondText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/greenMain" />
+            android:textColor="@color/greenMain"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center|end"
         android:paddingStart="30dp"
         android:paddingTop="25dp"
-        android:paddingBottom="25dp"
         android:paddingEnd="30dp"
-        android:gravity="center|end">
+        android:paddingBottom="25dp">
 
         <ImageView
             android:id="@+id/isDoneIcon"
