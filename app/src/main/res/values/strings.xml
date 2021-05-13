@@ -21,4 +21,9 @@
     <string name="name_error_message">Field should contain at least 1 letter and cannot: contain special characters, be empty</string>
     <string name="amount_error_message">Field cannot: contain special characters, be empty, be equal to 0</string>
     <string name="add">Add</string>
+    <string name="grocery_dialog_tag">insert new grocery dialog</string>
+    <string name="shopping_list_dialog_tag">insert new shopping list dialog</string>
+    <string name="shopping_list_id_key">SHOPPING_LIST_ID</string>
+    <string name="is_shopping_list_archived_key">IS_SHOPPING_LIST_ARCHIVED</string>
+    <string name="x_sign">X</string>
 </resources>

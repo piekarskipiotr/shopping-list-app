@@ -13,6 +13,8 @@ import com.apps.bacon.shoppinglistapp.ui.grocery.GroceryActivity
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener,
@@ -20,6 +22,14 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
     private lateinit var binding: ActivityHomeBinding
     private lateinit var shoppingListAdapter: ShoppingListsAdapter
     val homeViewModel: HomeViewModel by viewModels()
+
+
+    @Inject
+    @Named("shopping_list_id_key")
+    lateinit var shoppingListIdKey: String
+    @Inject
+    @Named("is_shopping_list_archived_key")
+    lateinit var isShoppingListArchivedKey: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +66,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
 
     private fun openDialog() {
         val shoppingListDialog: ShoppingListDialog = ShoppingListDialog().newInstance()
-        shoppingListDialog.show(supportFragmentManager, SHOPPING_LIST_DIALOG_TAG)
+        shoppingListDialog.show(supportFragmentManager, getString(R.string.shopping_list_dialog_tag))
     }
 
     private fun initRecyclerView() {
@@ -98,18 +108,12 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
 
     override fun onShoppingListClick(shoppingListId: Int, isArchived: Boolean) {
         intent = Intent(this, GroceryActivity::class.java)
-        intent.putExtra(SHOPPING_LIST_ID_KEY, shoppingListId)
-        intent.putExtra(IS_SHOPPING_LIST_ARCHIVED_KEY, isArchived)
+        intent.putExtra(shoppingListIdKey, shoppingListId)
+        intent.putExtra(isShoppingListArchivedKey, isArchived)
         startActivity(intent)
     }
 
     override fun onInsertButtonClick(shoppingListName: String) {
         homeViewModel.insertNewShoppingList(shoppingListName)
-    }
-
-    companion object {
-        const val SHOPPING_LIST_ID_KEY = "SHOPPING_LIST_ID"
-        const val IS_SHOPPING_LIST_ARCHIVED_KEY = "IS_SHOPPING_LIST_ARCHIVED"
-        const val SHOPPING_LIST_DIALOG_TAG = "insert new shopping list dialog"
     }
 }

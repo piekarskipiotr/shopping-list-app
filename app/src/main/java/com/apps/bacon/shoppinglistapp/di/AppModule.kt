@@ -28,6 +28,16 @@ object AppModule {
 
     @Provides
     @Singleton
+    @Named("shopping_list_id_key")
+    fun getShoppingListIdKey(@ApplicationContext context: Context): String = context.getString(R.string.shopping_list_id_key)
+
+    @Provides
+    @Singleton
+    @Named("is_shopping_list_archived_key")
+    fun getShoppingListArchivedKey(@ApplicationContext context: Context): String = context.getString(R.string.is_shopping_list_archived_key)
+
+    @Provides
+    @Singleton
     fun provideRunningDatabase(
         @ApplicationContext context: Context
     ) = AppDatabase.getInstance(context)

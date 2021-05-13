@@ -1,6 +1,5 @@
 package com.apps.bacon.shoppinglistapp.ui.grocery;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -59,13 +58,14 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         return new ViewHolder(binding, mOnGroceryClick);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Grocery grocery = data.get(position);
 
         holder.title.setText(grocery.getName());
-        holder.secondText.setText("X"+grocery.getPieces());
+        String xSign = mContext.getString(R.string.x_sign);
+        String groceryPiecesText = xSign + grocery.getPieces();
+        holder.secondText.setText(groceryPiecesText);
         if(grocery.isDone()){
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.secondText.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

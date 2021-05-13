@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.databinding.DialogInsertShoppingListBinding
+import com.apps.bacon.shoppinglistapp.utils.Button
 import com.apps.bacon.shoppinglistapp.utils.NameValidation
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -92,12 +93,12 @@ class ShoppingListDialog : BottomSheetDialogFragment() {
         if(isEnabled) {
             binding.addNewShoppingListButton.apply {
                 isClickable = true
-                alpha = ENABLE_ALPHA
+                alpha = Button.State.Enable.alpha
             }
         } else {
             binding.addNewShoppingListButton.apply {
                 isClickable = false
-                alpha = DISABLE_ALPHA
+                alpha = Button.State.Disable.alpha
             }
         }
     }
@@ -124,10 +125,5 @@ class ShoppingListDialog : BottomSheetDialogFragment() {
 
     interface ShoppingListDialogListener {
         fun onInsertButtonClick(shoppingListName: String)
-    }
-
-    companion object {
-        const val DISABLE_ALPHA = 0.7f
-        const val ENABLE_ALPHA = 1f
     }
 }

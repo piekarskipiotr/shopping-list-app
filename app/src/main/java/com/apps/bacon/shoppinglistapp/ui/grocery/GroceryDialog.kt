@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.databinding.DialogInsertGroceryBinding
 import com.apps.bacon.shoppinglistapp.utils.AmountValidation
+import com.apps.bacon.shoppinglistapp.utils.Button
 import com.apps.bacon.shoppinglistapp.utils.NameValidation
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -123,12 +124,12 @@ class GroceryDialog : BottomSheetDialogFragment() {
         if(isEnabled) {
             binding.addNewGroceryButton.apply {
                 isClickable = true
-                alpha = ENABLE_ALPHA
+                alpha = Button.State.Enable.alpha
             }
         } else {
             binding.addNewGroceryButton.apply {
                 isClickable = false
-                alpha = DISABLE_ALPHA
+                alpha = Button.State.Disable.alpha
             }
         }
     }
@@ -151,10 +152,5 @@ class GroceryDialog : BottomSheetDialogFragment() {
 
     interface GroceryDialogListener {
         fun onInsertButtonClick(groceryName: String, amount: Int)
-    }
-
-    companion object {
-        const val DISABLE_ALPHA = 0.7f
-        const val ENABLE_ALPHA = 1f
     }
 }

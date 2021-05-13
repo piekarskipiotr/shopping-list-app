@@ -1,6 +1,5 @@
 package com.apps.bacon.shoppinglistapp.ui.home
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -34,12 +33,12 @@ class ShoppingListsAdapter constructor(
         return ViewHolder(view)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val shoppingList = data[position]
 
         holder.title.text = shoppingList.name
-        holder.secondText.text = context.resources.getString(R.string.shopping_list_item_second_text_prefix) + " ${shoppingList.doneGroceries}/${shoppingList.allGroceries}"
+        val secondText = context.resources.getString(R.string.shopping_list_item_second_text_prefix) + " ${shoppingList.doneGroceries}/${shoppingList.allGroceries}"
+        holder.secondText.text = secondText
     }
 
     override fun getItemCount() = data.size

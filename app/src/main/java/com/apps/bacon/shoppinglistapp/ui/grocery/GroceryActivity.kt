@@ -10,7 +10,10 @@ import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.databinding.ActivityGroceryBinding
+import com.apps.bacon.shoppinglistapp.utils.Button
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import javax.inject.Named
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -23,14 +26,21 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
     private var shoppingListId by Delegates.notNull<Int>()
     private var isShoppingListIdArchived by Delegates.notNull<Boolean>()
 
+    @Inject
+    @Named("shopping_list_id_key")
+    lateinit var shoppingListIdKey: String
+    @Inject
+    @Named("is_shopping_list_archived_key")
+    lateinit var isShoppingListArchivedKey: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGroceryBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         //get extras
-        shoppingListId = intent.extras!!.getInt(SHOPPING_LIST_ID_KEY)
-        isShoppingListIdArchived = intent.extras!!.getBoolean(IS_SHOPPING_LIST_ARCHIVED_KEY)
+        shoppingListId = intent.extras!!.getInt(shoppingListIdKey)
+        isShoppingListIdArchived = intent.extras!!.getBoolean(isShoppingListArchivedKey)
 
         initRecyclerView(isShoppingListIdArchived)
         //get shoppingList object
@@ -61,7 +71,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
 
     private fun openDialog() {
         val groceryDialog: GroceryDialog = GroceryDialog().newInstance()
-        groceryDialog.show(supportFragmentManager, GROCERY_DIALOG_TAG)
+        groceryDialog.show(supportFragmentManager, getString(R.string.grocery_dialog_tag))
     }
 
     private fun initRecyclerView(isArchived: Boolean) {
@@ -84,7 +94,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
 
     private fun disableAddingButton() {
         binding.addGroceryButton.isClickable = false
-        binding.addGroceryButton.alpha = DISABLE_ALPHA
+        binding.addGroceryButton.alpha = Button.State.Disable.alpha
     }
 
     override fun OnGroceryClick(grocery: Grocery) {
@@ -102,12 +112,5 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         if (shoppingList.isArchived != isShoppingListIdArchived) {
             groceryViewModel.setShoppingListAsArchived(shoppingList)
         }
-    }
-
-    companion object {
-        const val SHOPPING_LIST_ID_KEY = "SHOPPING_LIST_ID"
-        const val IS_SHOPPING_LIST_ARCHIVED_KEY = "IS_SHOPPING_LIST_ARCHIVED"
-        const val DISABLE_ALPHA = 0.7f
-        const val GROCERY_DIALOG_TAG = "insert new grocery dialog"
     }
 }
