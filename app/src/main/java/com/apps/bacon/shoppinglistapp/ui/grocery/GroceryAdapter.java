@@ -1,4 +1,4 @@
-package com.apps.bacon.shoppinglistapp.adapters;
+package com.apps.bacon.shoppinglistapp.ui.grocery;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

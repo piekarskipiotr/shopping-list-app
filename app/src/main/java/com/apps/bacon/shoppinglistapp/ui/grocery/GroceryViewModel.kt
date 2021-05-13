@@ -1,4 +1,4 @@
-package com.apps.bacon.shoppinglistapp.viewmodel
+package com.apps.bacon.shoppinglistapp.ui.grocery
 
 import androidx.lifecycle.ViewModel
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery

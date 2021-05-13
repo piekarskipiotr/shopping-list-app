@@ -1,4 +1,4 @@
-package com.apps.bacon.shoppinglistapp
+package com.apps.bacon.shoppinglistapp.ui.home
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.databinding.DialogInsertShoppingListBinding
 import com.apps.bacon.shoppinglistapp.utils.NameValidation
 import com.google.android.material.bottomsheet.BottomSheetBehavior

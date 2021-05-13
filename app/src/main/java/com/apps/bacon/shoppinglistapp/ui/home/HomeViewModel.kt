@@ -1,4 +1,4 @@
-package com.apps.bacon.shoppinglistapp.viewmodel
+package com.apps.bacon.shoppinglistapp.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

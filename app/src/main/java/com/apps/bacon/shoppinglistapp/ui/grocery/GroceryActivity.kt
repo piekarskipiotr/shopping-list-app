@@ -1,4 +1,4 @@
-package com.apps.bacon.shoppinglistapp
+package com.apps.bacon.shoppinglistapp.ui.grocery
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -6,16 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.apps.bacon.shoppinglistapp.adapters.GroceryAdapter
+import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.databinding.ActivityGroceryBinding
-import com.apps.bacon.shoppinglistapp.viewmodel.GroceryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListener, GroceryDialog.GroceryDialogListener {
+class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListener,
+    GroceryDialog.GroceryDialogListener {
     private lateinit var binding: ActivityGroceryBinding
     private lateinit var groceryAdapter: GroceryAdapter
     private lateinit var shoppingList: ShoppingList
@@ -68,7 +68,12 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            groceryAdapter = GroceryAdapter(this@GroceryActivity, this@GroceryActivity, isArchived)
+            groceryAdapter =
+                GroceryAdapter(
+                    this@GroceryActivity,
+                    this@GroceryActivity,
+                    isArchived
+                )
             adapter = groceryAdapter
             val itemDecoration = DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL).apply {
                 setDrawable(ContextCompat.getDrawable(this@GroceryActivity, R.drawable.divider)!!)

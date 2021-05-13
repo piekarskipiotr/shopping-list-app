@@ -1,4 +1,4 @@
-package com.apps.bacon.shoppinglistapp
+package com.apps.bacon.shoppinglistapp.ui.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,15 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.apps.bacon.shoppinglistapp.adapters.ShoppingListsAdapter
+import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.databinding.ActivityHomeBinding
-import com.apps.bacon.shoppinglistapp.viewmodel.HomeViewModel
+import com.apps.bacon.shoppinglistapp.ui.grocery.GroceryActivity
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener, ShoppingListDialog.ShoppingListDialogListener {
+class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener,
+    ShoppingListDialog.ShoppingListDialogListener {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var shoppingListAdapter: ShoppingListsAdapter
     val homeViewModel: HomeViewModel by viewModels()
