@@ -47,7 +47,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         shoppingList = groceryViewModel.getShoppingList(shoppingListId)
 
         groceryViewModel.getGroceryForShoppingList(shoppingListId).observe(this) {
-            groceryAdapter.updateData(it)
+            groceryAdapter.submitList(it)
 
             //check if this is new empty list (all groceries = 0)
             isShoppingListIdArchived = if (shoppingList.allGroceries == 0)
@@ -70,7 +70,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
     }
 
     private fun openDialog() {
-        val groceryDialog: GroceryDialog = GroceryDialog().newInstance()
+        val groceryDialog = GroceryDialog().newInstance()
         groceryDialog.show(supportFragmentManager, getString(R.string.grocery_dialog_tag))
     }
 
@@ -89,6 +89,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
                 setDrawable(ContextCompat.getDrawable(this@GroceryActivity, R.drawable.divider)!!)
             }
             addItemDecoration(itemDecoration)
+            scheduleLayoutAnimation()
         }
     }
 
@@ -97,7 +98,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         binding.addGroceryButton.alpha = Button.State.Disable.alpha
     }
 
-    override fun OnGroceryClick(grocery: Grocery) {
+    override fun onGroceryClick(grocery: Grocery) {
         groceryViewModel.updateShoppingListDoneGroceriesValue(shoppingList, grocery.isDone)
         groceryViewModel.updateGroceryStatus(grocery)
     }

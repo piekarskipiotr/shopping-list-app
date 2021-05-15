@@ -5,28 +5,29 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.apps.bacon.shoppinglistapp.R;
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery;
 import com.apps.bacon.shoppinglistapp.databinding.GroceryItemBinding;
 import org.jetbrains.annotations.NotNull;
-import java.util.List;
 
-public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHolder> {
-    private final Context mContext;
-    private final OnGroceryClickListener mOnGroceryClick;
-    private final Boolean isShoppingListArchived;
-    private List<Grocery> data;
-    private int size = 0;
+public class GroceryAdapter extends ListAdapter<Grocery, GroceryAdapter.ViewHolder> {
+    private final Context context;
+    private final OnGroceryClickListener onGroceryClick;
+    private final Boolean isArchived;
 
-    public GroceryAdapter(Context context, OnGroceryClickListener onGroceryClick, Boolean isArchived){
-        mContext = context;
-        mOnGroceryClick = onGroceryClick;
-        isShoppingListArchived = isArchived;
+    public GroceryAdapter(Context context, OnGroceryClickListener onGroceryClick, Boolean isArchived) {
+        super(DIFF_CALLBACK);
+        this.context = context;
+        this.onGroceryClick = onGroceryClick;
+        this.isArchived = isArchived;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -41,13 +42,14 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
             statusIcon = itemView.isDoneIcon;
 
             this.onGroceryClickListener = onGroceryClickListener;
-            if(!isShoppingListArchived)
+            if(!isArchived)
                 itemView.getRoot().setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            onGroceryClickListener.OnGroceryClick(data.get(getAdapterPosition()));
+            onGroceryClickListener.onGroceryClick(getItem(getAdapterPosition()));
+            notifyItemChanged(getAdapterPosition());
         }
     }
 
@@ -55,40 +57,43 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         GroceryItemBinding binding = GroceryItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new ViewHolder(binding, mOnGroceryClick);
+        return new ViewHolder(binding, onGroceryClick);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        Grocery grocery = data.get(position);
+        Grocery grocery = getItem(position);
 
+        holder.itemView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_from_left_to_right));
         holder.title.setText(grocery.getName());
-        String xSign = mContext.getString(R.string.x_sign);
+        String xSign = context.getString(R.string.x_sign);
         String groceryPiecesText = xSign + grocery.getPieces();
         holder.secondText.setText(groceryPiecesText);
-        if(grocery.isDone()){
+
+        if(grocery.isDone()) {
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.secondText.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.statusIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_round_check_circle));
+            holder.statusIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_round_check_circle));
         } else {
             holder.title.setPaintFlags(holder.title.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             holder.secondText.setPaintFlags(holder.title.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.statusIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_round_check_circle_outline));
+            holder.statusIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_round_check_circle_outline));
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return size;
-    }
-
-    public void updateData(List<Grocery> dataList) {
-        data = dataList;
-        size = data.size();
-        notifyDataSetChanged();
-    }
-
     public interface OnGroceryClickListener {
-         void OnGroceryClick(Grocery grocery);
+         void onGroceryClick(Grocery grocery);
     }
+
+    public static final DiffUtil.ItemCallback<Grocery> DIFF_CALLBACK = new DiffUtil.ItemCallback<Grocery>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull @NotNull Grocery oldItem, @NonNull @NotNull Grocery newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(Grocery oldItem, Grocery newItem) {
+            return oldItem.isDone() == newItem.isDone();
+        }
+    };
 }

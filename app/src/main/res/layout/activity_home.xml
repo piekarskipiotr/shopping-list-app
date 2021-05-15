@@ -34,14 +34,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/greenMain"
-            app:tabMaxWidth="0dp"
-            app:tabMode="fixed"
             app:tabGravity="fill"
             app:tabIconTint="@color/tab_colors"
             app:tabIndicatorAnimationDuration="200"
             app:tabIndicatorColor="@color/white"
             app:tabIndicatorFullWidth="true"
             app:tabIndicatorHeight="2dp"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
             app:tabTextAppearance="@style/CustomTextStyle"
             app:tabTextColor="@color/tab_colors" />
 
@@ -55,7 +55,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layoutAnimation="@anim/layout_animation" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addShoppingListButton"

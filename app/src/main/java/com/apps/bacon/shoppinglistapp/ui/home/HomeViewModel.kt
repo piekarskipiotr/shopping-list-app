@@ -34,7 +34,7 @@ class HomeViewModel @Inject constructor(
         shoppingListRepository.insert(shoppingList)
     }
 
-    val shoppingListFilteredByArchived: LiveData<List<ShoppingList>> = Transformations.switchMap(selectedTab) {
+    val shoppingListFilteredByArchived = Transformations.switchMap(selectedTab) {
         shoppingListRepository.getShoppingListsByArchivedStatus(it)
     }
 }

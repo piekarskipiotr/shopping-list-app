@@ -23,7 +23,6 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
     private lateinit var shoppingListAdapter: ShoppingListsAdapter
     val homeViewModel: HomeViewModel by viewModels()
 
-
     @Inject
     @Named("shopping_list_id_key")
     lateinit var shoppingListIdKey: String
@@ -40,13 +39,14 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         initTabs()
 
         homeViewModel.shoppingListFilteredByArchived.observe(this, {
-            shoppingListAdapter.updateData(it)
+            shoppingListAdapter.submitList(it)
         })
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
                     homeViewModel.setSelectedTab(tab.position)
+                    binding.recyclerView.scheduleLayoutAnimation()
                 }
             }
 
@@ -65,7 +65,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
     }
 
     private fun openDialog() {
-        val shoppingListDialog: ShoppingListDialog = ShoppingListDialog().newInstance()
+        val shoppingListDialog = ShoppingListDialog().newInstance()
         shoppingListDialog.show(supportFragmentManager, getString(R.string.shopping_list_dialog_tag))
     }
 
@@ -93,11 +93,10 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         //add tabs
         val size = listOfTitles.size - 1
         for (i in 0..size) {
-            val isSelected = i == 0
             val tab = binding.tabLayout.newTab().setText(listOfTitles[i]).apply {
                 icon = listOfIcons[i]
             }
-            binding.tabLayout.addTab(tab, i, isSelected)
+            binding.tabLayout.addTab(tab, i)
         }
 
         //select tab on screen rotation
