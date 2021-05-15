@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.databinding.ActivityGroceryBinding
 import com.apps.bacon.shoppinglistapp.utils.Button
+import com.apps.bacon.shoppinglistapp.utils.CustomDividerItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
@@ -78,16 +78,9 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            groceryAdapter =
-                GroceryAdapter(
-                    this@GroceryActivity,
-                    this@GroceryActivity,
-                    isArchived
-                )
+            groceryAdapter = GroceryAdapter(this@GroceryActivity, this@GroceryActivity, isArchived)
             adapter = groceryAdapter
-            val itemDecoration = DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL).apply {
-                setDrawable(ContextCompat.getDrawable(this@GroceryActivity, R.drawable.divider)!!)
-            }
+            val itemDecoration = CustomDividerItemDecorator(ContextCompat.getDrawable(this@GroceryActivity, R.drawable.divider))
             addItemDecoration(itemDecoration)
             scheduleLayoutAnimation()
         }

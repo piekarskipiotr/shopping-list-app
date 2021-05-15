@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.databinding.ActivityHomeBinding
 import com.apps.bacon.shoppinglistapp.ui.grocery.GroceryActivity
+import com.apps.bacon.shoppinglistapp.utils.CustomDividerItemDecorator
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -75,9 +75,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
             layoutManager = LinearLayoutManager(context)
             shoppingListAdapter = ShoppingListsAdapter(this@HomeActivity, this@HomeActivity)
             adapter = shoppingListAdapter
-            val itemDecoration = DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL).apply {
-                setDrawable(ContextCompat.getDrawable(this@HomeActivity, R.drawable.divider)!!)
-            }
+            val itemDecoration = CustomDividerItemDecorator(ContextCompat.getDrawable(this@HomeActivity, R.drawable.divider))
             addItemDecoration(itemDecoration)
         }
     }
