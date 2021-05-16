@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
+import java.util.Objects;
 
 public class CustomDividerItemDecorator extends RecyclerView.ItemDecoration {
     private final Drawable divider;
@@ -18,8 +19,8 @@ public class CustomDividerItemDecorator extends RecyclerView.ItemDecoration {
         int dividerLeft = parent.getPaddingLeft();
         int dividerRight = parent.getWidth() - parent.getPaddingRight();
 
-        int childCount = parent.getChildCount();
-        for (int i = 0; i <= childCount - 2; i++) {
+        int childCount = Objects.requireNonNull(parent.getAdapter()).getItemCount();
+        for (int i = 0; i < childCount - 1; i++) {
             View child = parent.getChildAt(i);
 
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();

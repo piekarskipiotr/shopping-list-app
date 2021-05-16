@@ -54,11 +54,8 @@ class ShoppingListsAdapter constructor(
         }
 
         override fun areContentsTheSame(oldItem: ShoppingList, newItem: ShoppingList): Boolean {
-            return oldItem.id == newItem.id
-                    && oldItem.name == newItem.name
-                    && oldItem.doneGroceries == newItem.doneGroceries
+            return oldItem.doneGroceries == newItem.doneGroceries
                     && oldItem.allGroceries == newItem.allGroceries
-                    && oldItem.date == newItem.date
                     && oldItem.isArchived == newItem.isArchived
         }
     }
