@@ -51,6 +51,15 @@ class GroceryViewModel @Inject constructor(
         updateShoppingList(shoppingList)
     }
 
+    private fun updateShoppingListOnGrocerySwipe(shoppingList: ShoppingList, isDeleted: Boolean, isDone: Boolean) {
+        shoppingList.apply {
+            allGroceries += if (isDeleted) -1 else 1
+            doneGroceries += if (isDone) -1 else 1
+        }
+
+        updateShoppingList(shoppingList)
+    }
+
     fun updateGroceryStatus(grocery: Grocery) {
         grocery.apply {
             isDone = !grocery.isDone
@@ -63,5 +72,15 @@ class GroceryViewModel @Inject constructor(
             isArchived = true
         }
         updateShoppingList(shoppingList)
+    }
+
+    fun deleteGroceryOnSwipe(grocery: Grocery, shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+        groceryRepository.delete(grocery)
+        updateShoppingListOnGrocerySwipe(shoppingList, true, grocery.isDone)
+    }
+
+    fun undoDeletedGrocery(grocery: Grocery, shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+        groceryRepository.insert(grocery)
+        updateShoppingListOnGrocerySwipe(shoppingList, false, !grocery.isDone)
     }
 }

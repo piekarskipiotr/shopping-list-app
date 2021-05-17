@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
@@ -11,13 +12,14 @@ import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.databinding.ActivityGroceryBinding
 import com.apps.bacon.shoppinglistapp.utils.Button
 import com.apps.bacon.shoppinglistapp.utils.CustomDividerItemDecorator
+import com.apps.bacon.shoppinglistapp.utils.OnItemSwipe
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListener,
+class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListener, OnItemSwipe.OnSwipe,
     GroceryDialog.GroceryDialogListener {
     private lateinit var binding: ActivityGroceryBinding
     private lateinit var groceryAdapter: GroceryAdapter
@@ -83,6 +85,16 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
             val itemDecoration = CustomDividerItemDecorator(ContextCompat.getDrawable(this@GroceryActivity, R.drawable.divider))
             addItemDecoration(itemDecoration)
             scheduleLayoutAnimation()
+
+            if (!isShoppingListIdArchived)
+                ItemTouchHelper(
+                    OnItemSwipe(
+                        this@GroceryActivity,
+                        binding.recyclerView,
+                        this@GroceryActivity,
+                        ContextCompat.getDrawable(this@GroceryActivity, R.drawable.ic_round_delete)!!
+                    )
+                ).attachToRecyclerView(this)
         }
     }
 
@@ -106,5 +118,13 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         if (shoppingList.isArchived != isShoppingListIdArchived) {
             groceryViewModel.setShoppingListAsArchived(shoppingList)
         }
+    }
+
+    override fun deleteOnItemSwipe(item: Any) {
+        groceryViewModel.deleteGroceryOnSwipe(item as Grocery, shoppingList)
+    }
+
+    override fun undoDeletedItem(item: Any) {
+        groceryViewModel.undoDeletedGrocery(item as Grocery, shoppingList)
     }
 }

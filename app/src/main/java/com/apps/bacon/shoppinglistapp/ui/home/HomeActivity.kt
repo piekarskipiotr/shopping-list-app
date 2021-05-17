@@ -5,11 +5,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apps.bacon.shoppinglistapp.R
+import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.databinding.ActivityHomeBinding
 import com.apps.bacon.shoppinglistapp.ui.grocery.GroceryActivity
 import com.apps.bacon.shoppinglistapp.utils.CustomDividerItemDecorator
+import com.apps.bacon.shoppinglistapp.utils.OnItemSwipe
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -18,6 +21,7 @@ import javax.inject.Named
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener,
+    OnItemSwipe.OnSwipe,
     ShoppingListDialog.ShoppingListDialogListener {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var shoppingListAdapter: ShoppingListsAdapter
@@ -26,6 +30,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
     @Inject
     @Named("shopping_list_id_key")
     lateinit var shoppingListIdKey: String
+
     @Inject
     @Named("is_shopping_list_archived_key")
     lateinit var isShoppingListArchivedKey: String
@@ -40,6 +45,29 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
 
         homeViewModel.shoppingListFilteredByArchived.observe(this, {
             shoppingListAdapter.submitList(it)
+
+        })
+
+        val itemTouchHelper = ItemTouchHelper(
+            OnItemSwipe(
+                this@HomeActivity,
+                binding.recyclerView,
+                this@HomeActivity,
+                ContextCompat.getDrawable(
+                    this@HomeActivity,
+                    R.drawable.ic_round_remove_shopping_cart
+                )!!
+            )
+        )
+
+        homeViewModel.selectedTab.observe(this, {
+            itemTouchHelper.attachToRecyclerView(
+                if (it == 0) {
+                    binding.recyclerView
+                } else {
+                    null
+                }
+            )
         })
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -66,7 +94,10 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
 
     private fun openDialog() {
         val shoppingListDialog = ShoppingListDialog().newInstance()
-        shoppingListDialog.show(supportFragmentManager, getString(R.string.shopping_list_dialog_tag))
+        shoppingListDialog.show(
+            supportFragmentManager,
+            getString(R.string.shopping_list_dialog_tag)
+        )
     }
 
     private fun initRecyclerView() {
@@ -75,7 +106,13 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
             layoutManager = LinearLayoutManager(context)
             shoppingListAdapter = ShoppingListsAdapter(this@HomeActivity, this@HomeActivity)
             adapter = shoppingListAdapter
-            val itemDecoration = CustomDividerItemDecorator(ContextCompat.getDrawable(this@HomeActivity, R.drawable.divider))
+
+            val itemDecoration = CustomDividerItemDecorator(
+                ContextCompat.getDrawable(
+                    this@HomeActivity,
+                    R.drawable.divider
+                )
+            )
             addItemDecoration(itemDecoration)
         }
     }
@@ -112,5 +149,13 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
 
     override fun onInsertButtonClick(shoppingListName: String) {
         homeViewModel.insertNewShoppingList(shoppingListName)
+    }
+
+    override fun deleteOnItemSwipe(item: Any) {
+        homeViewModel.deleteShoppingListOnSwipe(item as ShoppingList)
+    }
+
+    override fun undoDeletedItem(item: Any) {
+        homeViewModel.undoDeletedShoppingList(item as ShoppingList)
     }
 }

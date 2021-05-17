@@ -13,5 +13,7 @@ class ShoppingListRepository @Inject constructor(
 
     suspend fun insert(shoppingList: ShoppingList) = database.shoppingListDao().insert(shoppingList)
 
+    suspend fun delete(shoppingList: ShoppingList) = database.shoppingListDao().delete(shoppingList)
+
     suspend fun update(shoppingList: ShoppingList) = database.shoppingListDao().update(shoppingList)
 }

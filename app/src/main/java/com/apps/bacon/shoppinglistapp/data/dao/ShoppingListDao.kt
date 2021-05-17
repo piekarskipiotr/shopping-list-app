@@ -16,6 +16,9 @@ interface ShoppingListDao {
     @Insert
     suspend fun insert(shoppingList: ShoppingList)
 
+    @Delete
+    suspend fun delete(shoppingList: ShoppingList)
+
     @Update
     suspend fun update(shoppingList: ShoppingList)
 }

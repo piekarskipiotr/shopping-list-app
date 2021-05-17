@@ -2,15 +2,19 @@ package com.apps.bacon.shoppinglistapp.ui.home
 
 import androidx.lifecycle.*
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
+import com.apps.bacon.shoppinglistapp.data.repository.GroceryRepository
 import com.apps.bacon.shoppinglistapp.data.repository.ShoppingListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val groceryRepository: GroceryRepository,
     private val shoppingListRepository: ShoppingListRepository
 ) : ViewModel() {
     var selectedTab = MutableLiveData<Int>().apply {
@@ -32,6 +36,27 @@ class HomeViewModel @Inject constructor(
             false
         )
         shoppingListRepository.insert(shoppingList)
+    }
+
+    private var swipedShoppingListId: Int = -1
+    private var deleteGroceryJob: Job? = null
+
+    private fun deleteGroceryFromDeletedShoppingList() = viewModelScope.launch(Dispatchers.Default) {
+        delay(3000)
+        groceryRepository.deleteGroceryFromDeletedShoppingList(swipedShoppingListId)
+    }
+
+    fun undoDeletedShoppingList(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+        shoppingListRepository.insert(shoppingList)
+        deleteGroceryJob!!.cancel()
+    }
+
+    fun deleteShoppingListOnSwipe(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+        shoppingListRepository.delete(shoppingList)
+
+        swipedShoppingListId = shoppingList.id
+        deleteGroceryJob = deleteGroceryFromDeletedShoppingList()
+        deleteGroceryJob!!.start()
     }
 
     val shoppingListFilteredByArchived = Transformations.switchMap(selectedTab) {
