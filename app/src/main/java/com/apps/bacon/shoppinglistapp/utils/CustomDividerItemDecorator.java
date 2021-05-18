@@ -19,7 +19,7 @@ public class CustomDividerItemDecorator extends RecyclerView.ItemDecoration {
         int dividerLeft = parent.getPaddingLeft();
         int dividerRight = parent.getWidth() - parent.getPaddingRight();
 
-        int childCount = Objects.requireNonNull(parent.getAdapter()).getItemCount();
+        int childCount = Math.min(parent.getChildCount(), Objects.requireNonNull(parent.getAdapter()).getItemCount());
         for (int i = 0; i < childCount - 1; i++) {
             View child = parent.getChildAt(i);
 
