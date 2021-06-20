@@ -45,7 +45,6 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
 
         homeViewModel.shoppingListFilteredByArchived.observe(this, {
             shoppingListAdapter.submitList(it)
-
         })
 
         val itemTouchHelper = ItemTouchHelper(
@@ -74,7 +73,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
                     homeViewModel.setSelectedTab(tab.position)
-                    binding.recyclerView.scheduleLayoutAnimation()
+                    binding.recyclerView.startLayoutAnimation()
                 }
             }
 
