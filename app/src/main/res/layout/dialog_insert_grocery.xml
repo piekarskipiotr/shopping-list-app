@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/shopping_list_dialog_title"
+                android:text="@string/grocery_dialog_title"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
