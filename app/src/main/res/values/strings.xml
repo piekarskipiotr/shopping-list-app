@@ -26,4 +26,13 @@
     <string name="shopping_list_id_key">SHOPPING_LIST_ID</string>
     <string name="is_shopping_list_archived_key">IS_SHOPPING_LIST_ARCHIVED</string>
     <string name="x_sign">X</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="register_prefix_text">You do not have an account yet?</string>
+    <string name="register">Register</string>
+    <string name="google">google</string>
+    <string name="registration">Create account</string>
+    <string name="sign_up">Sign up</string>
 </resources>

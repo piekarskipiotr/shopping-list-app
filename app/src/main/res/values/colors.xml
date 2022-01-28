@@ -12,4 +12,5 @@
     <color name="disabledWhite">#B3FFFFFF</color>
     <color name="greenMain">#57c354</color>
     <color name="red">#ef233c</color>
+    <color name="blue">#4287f5</color>
 </resources>

@@ -55,7 +55,7 @@ class GroceryDialog : BottomSheetDialogFragment() {
                 bottomSheetDialog.dismiss()
             }
 
-            //set button state on view created or recreated
+            // set button state on view created or recreated
             setAddButtonState(
                 NameValidation.validate(binding.groceryNameTextInput.text) && NameValidation.validate(binding.amountTextInput.text)
             )

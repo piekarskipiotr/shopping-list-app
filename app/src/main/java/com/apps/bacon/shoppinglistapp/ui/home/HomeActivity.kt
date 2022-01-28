@@ -15,7 +15,6 @@ import com.apps.bacon.shoppinglistapp.utils.CustomDividerItemDecorator
 import com.apps.bacon.shoppinglistapp.utils.OnItemSwipe
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -43,9 +42,9 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         initRecyclerView()
         initTabs()
 
-        homeViewModel.shoppingListFilteredByArchived.observe(this, {
+        homeViewModel.shoppingListFilteredByArchived.observe(this) {
             shoppingListAdapter.submitList(it)
-        })
+        }
 
         val itemTouchHelper = ItemTouchHelper(
             OnItemSwipe(
@@ -59,7 +58,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
             )
         )
 
-        homeViewModel.selectedTab.observe(this, {
+        homeViewModel.selectedTab.observe(this) {
             itemTouchHelper.attachToRecyclerView(
                 if (it == 0) {
                     binding.recyclerView
@@ -67,7 +66,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
                     null
                 }
             )
-        })
+        }
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

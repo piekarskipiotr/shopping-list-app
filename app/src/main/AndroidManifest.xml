@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShoppingListApp"
         tools:ignore="AllowBackup">
+        <activity
+            android:name=".ui.register.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false" />
         <activity android:name=".ui.grocery.GroceryActivity" />
         <activity android:name=".ui.home.HomeActivity" />
         <activity
