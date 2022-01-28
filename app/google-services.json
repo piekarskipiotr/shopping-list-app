@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "677215279183",
+    "project_id": "shopping-list-12c04",
+    "storage_bucket": "shopping-list-12c04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677215279183:android:ca27a0776f16b7cca4723a",
+        "android_client_info": {
+          "package_name": "com.apps.bacon.shoppinglistapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "677215279183-c03sqfrnko1rp11lmqbc7u07c7co1rpn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZo7mYeVSNZOxtnotUXEUMeY2RWkddxzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "677215279183-c03sqfrnko1rp11lmqbc7u07c7co1rpn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

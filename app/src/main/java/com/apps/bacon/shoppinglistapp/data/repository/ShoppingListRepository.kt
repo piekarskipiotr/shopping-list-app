@@ -7,9 +7,11 @@ import javax.inject.Inject
 class ShoppingListRepository @Inject constructor(
     private val database: AppDatabase
 ) {
-    fun getShoppingListById(shoppingListId: Int) = database.shoppingListDao().getShoppingListById(shoppingListId)
+    fun getShoppingListById(shoppingListId: Int) =
+        database.shoppingListDao().getShoppingListById(shoppingListId)
 
-    fun getShoppingListsByArchivedStatus(selectedTab: Int) = database.shoppingListDao().getShoppingListsByArchivedStatus(selectedTab)
+    fun getShoppingListsByArchivedStatus(selectedTab: Int) =
+        database.shoppingListDao().getShoppingListsByArchivedStatus(selectedTab)
 
     suspend fun insert(shoppingList: ShoppingList) = database.shoppingListDao().insert(shoppingList)
 
