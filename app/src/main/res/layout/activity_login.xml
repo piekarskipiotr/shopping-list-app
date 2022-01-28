@@ -103,34 +103,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@color/lightGray" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/googleSignInButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:strokeColor="@color/lightGray"
-            app:strokeWidth="2dp">
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:contentDescription="@string/google"
-                android:src="@drawable/ic_google" />
-
-        </com.google.android.material.card.MaterialCardView>
-
     </LinearLayout>
 
 
