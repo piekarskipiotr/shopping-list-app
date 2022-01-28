@@ -156,4 +156,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
     override fun undoDeletedItem(item: Any) {
         homeViewModel.undoDeletedShoppingList(item as ShoppingList)
     }
+
+    override fun onBackPressed() {
+    }
 }

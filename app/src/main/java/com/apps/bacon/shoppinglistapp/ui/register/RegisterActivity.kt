@@ -38,9 +38,7 @@ class RegisterActivity : AppCompatActivity() {
             if (it is String) {
                 Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
             } else if (it is AuthResult) {
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.flags += Intent.FLAG_ACTIVITY_NO_HISTORY
-                startActivity(intent)
+                startActivity(Intent(this, HomeActivity::class.java))
             }
         }
 
