@@ -3,6 +3,7 @@ package com.apps.bacon.shoppinglistapp.data.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "grocery")
 data class Grocery(
@@ -24,4 +25,6 @@ data class Grocery(
 
     @ColumnInfo(name = "user_id")
     var userId: String
-)
+) {
+    constructor() : this(0, "", 0, false, 0,"")
+}

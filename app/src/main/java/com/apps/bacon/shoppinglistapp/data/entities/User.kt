@@ -13,4 +13,6 @@ data class User(
 
     @ColumnInfo(name = "date")
     var lastUpdate: Date
-)
+) {
+    constructor() : this("", Date())
+}

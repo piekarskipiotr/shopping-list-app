@@ -173,11 +173,15 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
         return when (item.itemId) {
-                R.id.action_logout -> {
-                    logout()
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+            R.id.action_logout -> {
+                logout()
+                true
             }
+            R.id.action_sync -> {
+                homeViewModel.sendData()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

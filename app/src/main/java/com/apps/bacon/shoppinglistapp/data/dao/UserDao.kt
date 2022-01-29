@@ -6,7 +6,7 @@ import com.apps.bacon.shoppinglistapp.data.entities.User
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user WHERE id = :userId")
-    fun getUserById(userId: String): User
+    fun getUserById(userId: String): User?
 
     @Insert
     suspend fun insert(user: User)

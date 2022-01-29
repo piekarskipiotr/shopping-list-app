@@ -20,12 +20,11 @@ data class ShoppingList(
     @ColumnInfo(name = "all_groceries")
     var allGroceries: Int,
 
-    @ColumnInfo(name = "date")
-    var date: Date,
-
     @ColumnInfo(name = "is_archived")
     var isArchived: Boolean,
 
     @ColumnInfo(name = "user_id")
     var userId: String
-)
+) {
+    constructor() : this(0, "", 0, 0, false, "")
+}

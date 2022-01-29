@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val userRepository: UserRepository
-): ViewModel() {
+) : ViewModel() {
     var authResult = MutableLiveData<Any>().apply {
         //init value on start
         value = null

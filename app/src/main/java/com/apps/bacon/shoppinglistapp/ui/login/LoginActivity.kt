@@ -13,7 +13,9 @@ import com.apps.bacon.shoppinglistapp.ui.register.RegisterActivity
 import com.apps.bacon.shoppinglistapp.utils.Button
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.AuthResult
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private var isEmailValid = false
@@ -35,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
             if (it is String) {
                 Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
             } else if (it is AuthResult) {
+                loginViewModel.checkNeedToUpdate(it.user!!.uid)
                 startActivity(Intent(this, HomeActivity::class.java))
             }
         }
