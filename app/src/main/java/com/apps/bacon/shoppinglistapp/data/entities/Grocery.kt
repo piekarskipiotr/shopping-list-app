@@ -20,5 +20,8 @@ data class Grocery(
     var isDone: Boolean,
 
     @ColumnInfo(name = "shopping_list_id")
-    var shoppingListId: Int
+    var shoppingListId: Int,
+
+    @ColumnInfo(name = "user_id")
+    var userId: String
 )

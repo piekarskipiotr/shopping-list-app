@@ -6,6 +6,7 @@ import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.data.repository.GroceryRepository
 import com.apps.bacon.shoppinglistapp.data.repository.ShoppingListRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,22 +17,24 @@ class GroceryViewModel @Inject constructor(
     private val groceryRepository: GroceryRepository,
     private val shoppingListRepository: ShoppingListRepository
 ) : ViewModel() {
-    fun getShoppingList(shoppingListId: Int) = shoppingListRepository.getShoppingListById(shoppingListId)
+    fun getShoppingList(shoppingListId: Int) = shoppingListRepository.getShoppingListById(shoppingListId, FirebaseAuth.getInstance().currentUser!!.uid)
 
-    fun getGroceryForShoppingList(shoppingListId: Int) = groceryRepository.getGroceryForShoppingList(shoppingListId)
+    fun getGroceryForShoppingList(shoppingListId: Int) = groceryRepository.getGroceryForShoppingList(shoppingListId, FirebaseAuth.getInstance().currentUser!!.uid)
 
     private fun updateShoppingList(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
         shoppingListRepository.update(shoppingList)
     }
 
     fun insertNewGrocery(groceryName: String, amount: Int, shoppingListId: Int) = viewModelScope.launch(Dispatchers.Default) {
-        val grocery = Grocery(
-            0,
-            groceryName,
-            amount,
-            false,
-            shoppingListId
-        )
+        val grocery =
+            Grocery(
+                0,
+                groceryName,
+                amount,
+                false,
+                shoppingListId,
+                FirebaseAuth.getInstance().currentUser!!.uid
+            )
         groceryRepository.insert(grocery)
     }
 

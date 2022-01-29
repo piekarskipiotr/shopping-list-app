@@ -2,8 +2,10 @@ package com.apps.bacon.shoppinglistapp.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,17 +13,20 @@ import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.databinding.ActivityHomeBinding
 import com.apps.bacon.shoppinglistapp.ui.grocery.GroceryActivity
+import com.apps.bacon.shoppinglistapp.ui.login.LoginActivity
 import com.apps.bacon.shoppinglistapp.utils.CustomDividerItemDecorator
 import com.apps.bacon.shoppinglistapp.utils.OnItemSwipe
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
 
+
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener,
     OnItemSwipe.OnSwipe,
-    ShoppingListDialog.ShoppingListDialogListener {
+    ShoppingListDialog.ShoppingListDialogListener, Toolbar.OnMenuItemClickListener {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var shoppingListAdapter: ShoppingListsAdapter
     val homeViewModel: HomeViewModel by viewModels()
@@ -39,6 +44,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         binding = ActivityHomeBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        binding.toolbar.setOnMenuItemClickListener(this)
         initRecyclerView()
         initTabs()
 
@@ -157,6 +163,21 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         homeViewModel.undoDeletedShoppingList(item as ShoppingList)
     }
 
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        startActivity(Intent(this, LoginActivity::class.java))
+    }
+
     override fun onBackPressed() {
+    }
+
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        return when (item.itemId) {
+                R.id.action_logout -> {
+                    logout()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
     }
 }

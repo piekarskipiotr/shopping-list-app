@@ -25,4 +25,8 @@
     <style name="CustomInputLayout.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/greenMain</item>
     </style>
+
+    <style name="MyToolbarStyle" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

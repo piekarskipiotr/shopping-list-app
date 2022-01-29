@@ -44,11 +44,11 @@ abstract class AppDatabase : RoomDatabase() {
                     .addCallback(object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
-                            CoroutineScope(Dispatchers.Default).launch {
-                                instance!!.shoppingListDao().insert(ShoppingList(1, "Example list", 1, 2, Date(), false))
-                                instance!!.groceryDao().insert(Grocery(0, "Banana", 7, false, 1))
-                                instance!!.groceryDao().insert(Grocery(0, "Blueberry", 47, true, 1))
-                            }
+//                            CoroutineScope(Dispatchers.Default).launch {
+//                                instance!!.shoppingListDao().insert(ShoppingList(1, "Example list", 1, 2, Date(), false))
+//                                instance!!.groceryDao().insert(Grocery(0, "Banana", 7, false, 1))
+//                                instance!!.groceryDao().insert(Grocery(0, "Blueberry", 47, true, 1))
+//                            }
                         }
                     })
                     .build()

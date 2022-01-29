@@ -13,10 +13,14 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:background="@color/greenMain"
+            app:menu="@menu/main_menu"
+            android:theme="@style/MyToolbarStyle"
+            app:popupTheme="@style/MyToolbarStyle"
             app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <TextView

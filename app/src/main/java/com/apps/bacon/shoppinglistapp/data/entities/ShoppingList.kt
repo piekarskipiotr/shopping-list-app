@@ -24,5 +24,8 @@ data class ShoppingList(
     var date: Date,
 
     @ColumnInfo(name = "is_archived")
-    var isArchived: Boolean
+    var isArchived: Boolean,
+
+    @ColumnInfo(name = "user_id")
+    var userId: String
 )

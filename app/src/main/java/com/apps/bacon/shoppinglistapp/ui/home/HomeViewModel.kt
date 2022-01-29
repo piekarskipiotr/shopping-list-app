@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import com.apps.bacon.shoppinglistapp.data.repository.GroceryRepository
 import com.apps.bacon.shoppinglistapp.data.repository.ShoppingListRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -33,7 +34,8 @@ class HomeViewModel @Inject constructor(
             0,
             0,
             Date(),
-            false
+            false,
+            FirebaseAuth.getInstance().currentUser!!.uid
         )
         shoppingListRepository.insert(shoppingList)
     }
@@ -43,7 +45,7 @@ class HomeViewModel @Inject constructor(
 
     private fun deleteGroceryFromDeletedShoppingList() = viewModelScope.launch(Dispatchers.Default) {
         delay(3000)
-        groceryRepository.deleteGroceryFromDeletedShoppingList(swipedShoppingListId)
+        groceryRepository.deleteGroceryFromDeletedShoppingList(swipedShoppingListId, FirebaseAuth.getInstance().currentUser!!.uid)
     }
 
     fun undoDeletedShoppingList(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
@@ -60,6 +62,6 @@ class HomeViewModel @Inject constructor(
     }
 
     val shoppingListFilteredByArchived = Transformations.switchMap(selectedTab) {
-        shoppingListRepository.getShoppingListsByArchivedStatus(it)
+        shoppingListRepository.getShoppingListsByArchivedStatus(it, FirebaseAuth.getInstance().currentUser!!.uid)
     }
 }
