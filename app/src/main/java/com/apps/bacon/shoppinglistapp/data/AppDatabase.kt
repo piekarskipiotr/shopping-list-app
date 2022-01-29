@@ -9,15 +9,17 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.apps.bacon.shoppinglistapp.data.converters.DateConverter
 import com.apps.bacon.shoppinglistapp.data.dao.GroceryDao
 import com.apps.bacon.shoppinglistapp.data.dao.ShoppingListDao
+import com.apps.bacon.shoppinglistapp.data.dao.UserDao
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
+import com.apps.bacon.shoppinglistapp.data.entities.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
 @Database(
-    entities = [ShoppingList::class, Grocery::class],
+    entities = [ShoppingList::class, Grocery::class, User::class],
     version = 1,
     exportSchema = false
 )
@@ -25,6 +27,7 @@ import java.util.*
 abstract class AppDatabase : RoomDatabase() {
     abstract fun shoppingListDao(): ShoppingListDao
     abstract fun groceryDao(): GroceryDao
+    abstract fun userDao(): UserDao
 
     companion object {
         @Volatile

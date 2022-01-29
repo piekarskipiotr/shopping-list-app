@@ -5,6 +5,7 @@ import com.apps.bacon.shoppinglistapp.R
 import com.apps.bacon.shoppinglistapp.data.AppDatabase
 import com.apps.bacon.shoppinglistapp.data.repository.GroceryRepository
 import com.apps.bacon.shoppinglistapp.data.repository.ShoppingListRepository
+import com.apps.bacon.shoppinglistapp.data.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,13 +45,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(
+    fun provideShoppingListRepository(
         database: AppDatabase
     ) = ShoppingListRepository(database)
 
     @Provides
     @Singleton
-    fun provideWeeklyStatsRepository(
+    fun provideGroceryRepository(
         database: AppDatabase
     ) = GroceryRepository(database)
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(
+        database: AppDatabase
+    ) = UserRepository(database)
 }

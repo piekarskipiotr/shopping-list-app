@@ -11,7 +11,6 @@ import com.apps.bacon.shoppinglistapp.databinding.ActivityLoginBinding
 import com.apps.bacon.shoppinglistapp.ui.home.HomeActivity
 import com.apps.bacon.shoppinglistapp.ui.register.RegisterActivity
 import com.apps.bacon.shoppinglistapp.utils.Button
-import com.apps.bacon.shoppinglistapp.utils.NameValidation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.AuthResult
 
