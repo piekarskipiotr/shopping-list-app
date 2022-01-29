@@ -64,7 +64,6 @@ public class GroceryAdapter extends ListAdapter<Grocery, GroceryAdapter.ViewHold
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Grocery grocery = getItem(position);
 
-        holder.itemView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_from_left_to_right));
         holder.title.setText(grocery.getName());
         String xSign = context.getString(R.string.x_sign);
         String groceryPiecesText = xSign + grocery.getPieces();

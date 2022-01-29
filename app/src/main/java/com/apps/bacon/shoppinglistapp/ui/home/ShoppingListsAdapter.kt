@@ -38,7 +38,7 @@ class ShoppingListsAdapter constructor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val shoppingList = getItem(position)
 
-        holder.itemView.animation = AnimationUtils.loadAnimation(context, R.anim.slide_from_left_to_right)
+
         holder.title.text = shoppingList.name
         val secondText = context.resources.getString(R.string.shopping_list_item_second_text_prefix) + " ${shoppingList.doneGroceries}/${shoppingList.allGroceries}"
         holder.secondText.text = secondText
