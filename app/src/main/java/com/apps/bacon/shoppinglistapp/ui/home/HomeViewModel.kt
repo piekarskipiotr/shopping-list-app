@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
         selectedTab.value = selectedTabI
     }
 
-    fun insertNewShoppingList(shoppingListName: String) = viewModelScope.launch(Dispatchers.Default) {
+    fun insertNewShoppingList(shoppingListName: String) = viewModelScope.launch(Dispatchers.IO) {
         val shoppingList = ShoppingList(
             0,
             shoppingListName,
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
         deleteGroceryJob!!.start()
     }
 
-    fun sendData() = viewModelScope.launch(Dispatchers.Default) {
+    fun sendData() = viewModelScope.launch(Dispatchers.IO) {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
         // get local data

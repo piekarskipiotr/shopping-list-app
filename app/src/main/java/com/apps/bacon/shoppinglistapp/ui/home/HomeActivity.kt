@@ -3,6 +3,7 @@ package com.apps.bacon.shoppinglistapp.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -21,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
-
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListClickListener,
@@ -179,6 +179,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
             }
             R.id.action_sync -> {
                 homeViewModel.sendData()
+                Toast.makeText(this, getString(R.string.sent), Toast.LENGTH_SHORT).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)

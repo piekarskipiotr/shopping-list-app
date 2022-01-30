@@ -36,7 +36,7 @@ class LoginViewModel @Inject constructor(
         value = null
     }
 
-    fun checkNeedToUpdate(userId: String) = viewModelScope.launch(Dispatchers.Default) {
+    fun checkNeedToUpdate(userId: String) = viewModelScope.launch(Dispatchers.IO) {
         val user = FirebaseFirestore.getInstance().collection("users").document(userId).get().await().toObject(User::class.java)
         var localUser = userRepository.getUserById(userId)
         if (localUser == null) {
@@ -75,7 +75,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun signInUser(email: String, password: String) = viewModelScope.launch(Dispatchers.Default) {
+    fun signInUser(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         authResult.postValue(signIn(email, password))
     }
 

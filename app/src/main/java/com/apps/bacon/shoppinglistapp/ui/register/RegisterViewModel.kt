@@ -32,7 +32,7 @@ class RegisterViewModel @Inject constructor(
         userRepository.insert(user)
     }
 
-    fun signUpUser(email: String, password: String) = viewModelScope.launch(Dispatchers.Default) {
+    fun signUpUser(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         authResult.postValue(createUser(email, password))
     }
 
