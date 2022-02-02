@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import com.apps.bacon.shoppinglistapp.databinding.ActivityRegisterBinding
 import com.apps.bacon.shoppinglistapp.ui.home.HomeActivity
 import com.apps.bacon.shoppinglistapp.utils.Button
+import com.apps.bacon.shoppinglistapp.utils.EmptyValidation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +30,10 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(view)
         initValidation()
         binding.signUpButton.setOnClickListener {
-            registerViewModel.signUpUser(binding.emailTextInput.text.toString(), binding.passwordTextInput.text.toString())
+            registerViewModel.signUpUser(
+                binding.emailTextInput.text.toString(),
+                binding.passwordTextInput.text.toString()
+            )
         }
 
         binding.backButton.setOnClickListener {
@@ -47,23 +51,24 @@ class RegisterActivity : AppCompatActivity() {
 
         // set button state on view created or recreated
         setAddButtonState(
-            !binding.emailTextInput.text.isNullOrEmpty() && !binding.passwordTextInput.text.isNullOrEmpty() && !binding.confirmPasswordTextInput.text.isNullOrEmpty()
+            EmptyValidation.validate(binding.emailTextInput.text) && EmptyValidation.validate(binding.passwordTextInput.text) && EmptyValidation.validate(binding.confirmPasswordTextInput.text)
         )
     }
 
     private fun initValidation() {
         binding.emailTextInput.onTextChanged {
-            isEmailValid = !it.isNullOrEmpty()
+            isEmailValid = EmptyValidation.validate(it)
             setAddButtonState(isEmailValid && isPasswordValid && isConfirmPasswordValid)
         }
 
         binding.passwordTextInput.onTextChanged {
-            isPasswordValid = !it.isNullOrEmpty()
+            isPasswordValid = EmptyValidation.validate(it)
             setAddButtonState(isEmailValid && isPasswordValid && isConfirmPasswordValid)
         }
 
         binding.confirmPasswordTextInput.onTextChanged {
-            isConfirmPasswordValid = binding.confirmPasswordTextInput.text.toString() == binding.passwordTextInput.text.toString()
+            isConfirmPasswordValid =
+                binding.confirmPasswordTextInput.text.toString() == binding.passwordTextInput.text.toString()
             setAddButtonState(isEmailValid && isPasswordValid && isConfirmPasswordValid)
         }
     }

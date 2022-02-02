@@ -11,6 +11,7 @@ import com.apps.bacon.shoppinglistapp.databinding.ActivityLoginBinding
 import com.apps.bacon.shoppinglistapp.ui.home.HomeActivity
 import com.apps.bacon.shoppinglistapp.ui.register.RegisterActivity
 import com.apps.bacon.shoppinglistapp.utils.Button
+import com.apps.bacon.shoppinglistapp.utils.EmptyValidation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,18 +49,18 @@ class LoginActivity : AppCompatActivity() {
 
         // set button state on view created or recreated
         setAddButtonState(
-            !binding.emailTextInput.text.isNullOrEmpty() && !binding.passwordTextInput.text.isNullOrEmpty()
+            EmptyValidation.validate(binding.emailTextInput.text) && EmptyValidation.validate(binding.passwordTextInput.text)
         )
     }
 
     private fun initValidation() {
         binding.emailTextInput.onTextChanged {
-            isEmailValid = !it.isNullOrEmpty()
+            isEmailValid = EmptyValidation.validate(it)
             setAddButtonState(isEmailValid && isPasswordValid)
         }
 
         binding.passwordTextInput.onTextChanged {
-            isPasswordValid = !it.isNullOrEmpty()
+            isPasswordValid = EmptyValidation.validate(it)
             setAddButtonState(isEmailValid && isPasswordValid)
         }
     }
@@ -94,6 +95,5 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    override fun onBackPressed() {
-    }
+    override fun onBackPressed() {}
 }
