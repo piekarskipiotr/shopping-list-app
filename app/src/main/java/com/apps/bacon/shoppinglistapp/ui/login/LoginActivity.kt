@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.apps.bacon.shoppinglistapp.databinding.ActivityLoginBinding
@@ -40,6 +41,16 @@ class LoginActivity : AppCompatActivity() {
             } else if (it is AuthResult) {
                 loginViewModel.checkNeedToUpdate(it.user!!.uid)
                 startActivity(Intent(this, HomeActivity::class.java))
+            }
+        }
+
+        loginViewModel.signingIn.observe(this) {
+            if (it) {
+                binding.signInText.visibility = View.INVISIBLE
+                binding.signInProgressBar.visibility = View.VISIBLE
+            } else {
+                binding.signInText.visibility = View.VISIBLE
+                binding.signInProgressBar.visibility = View.GONE
             }
         }
 

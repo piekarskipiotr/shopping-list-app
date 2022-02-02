@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.apps.bacon.shoppinglistapp.databinding.ActivityRegisterBinding
@@ -46,6 +47,16 @@ class RegisterActivity : AppCompatActivity() {
             } else if (it is AuthResult) {
                 registerViewModel.createUserInfo(it.user!!.uid)
                 startActivity(Intent(this, HomeActivity::class.java))
+            }
+        }
+
+        registerViewModel.signingUp.observe(this) {
+            if (it) {
+                binding.signUpText.visibility = View.INVISIBLE
+                binding.signUpProgressBar.visibility = View.VISIBLE
+            } else {
+                binding.signUpText.visibility = View.VISIBLE
+                binding.signUpProgressBar.visibility = View.GONE
             }
         }
 

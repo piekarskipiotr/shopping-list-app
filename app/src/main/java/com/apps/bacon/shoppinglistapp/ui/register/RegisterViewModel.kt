@@ -23,6 +23,11 @@ class RegisterViewModel @Inject constructor(
         value = null
     }
 
+
+    var signingUp = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
     fun createUserInfo(userId: String) = viewModelScope.launch(Dispatchers.Default) {
         val user = User(
             userId,
@@ -33,7 +38,9 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun signUpUser(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
+        signingUp.postValue(true)
         authResult.postValue(createUser(email, password))
+        signingUp.postValue(false)
     }
 
     private suspend fun createUser(email: String, password: String): Any {

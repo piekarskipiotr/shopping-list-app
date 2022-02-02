@@ -12,6 +12,7 @@ import com.apps.bacon.shoppinglistapp.data.repository.GroceryRepository
 import com.apps.bacon.shoppinglistapp.data.repository.ShoppingListRepository
 import com.apps.bacon.shoppinglistapp.data.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,6 +37,10 @@ class LoginViewModel @Inject constructor(
         value = null
     }
 
+    var signingIn = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
     fun checkNeedToUpdate(userId: String) = viewModelScope.launch(Dispatchers.IO) {
         val user = FirebaseFirestore.getInstance().collection("users").document(userId).get().await().toObject(User::class.java)
         var localUser = userRepository.getUserById(userId)
@@ -52,7 +57,6 @@ class LoginViewModel @Inject constructor(
                 updateLocalDatabase(userId)
             }
         }
-
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -63,6 +67,7 @@ class LoginViewModel @Inject constructor(
         if (shoppingList != null) {
             for (e in shoppingList) {
                 val sl = Mapper.mapShoppingList(e.value as Map<String, Any>)
+                println(sl.toString())
                 shoppingListRepository.insertOrUpdate(sl)
             }
         }
@@ -76,7 +81,9 @@ class LoginViewModel @Inject constructor(
     }
 
     fun signInUser(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
+        signingIn.postValue(true)
         authResult.postValue(signIn(email, password))
+        signingIn.postValue(false)
     }
 
     private suspend fun signIn(email: String, password: String): Any {
