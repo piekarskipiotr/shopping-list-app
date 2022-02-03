@@ -24,6 +24,7 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val shoppingListRepository: ShoppingListRepository,
     private val groceryRepository: GroceryRepository,
+    private val database: FirebaseFirestore,
     private val auth: FirebaseAuth
 ) : ViewModel() {
     var authResult = MutableLiveData<Any>().apply {
@@ -36,7 +37,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun checkNeedToUpdate(userId: String) = viewModelScope.launch(Dispatchers.IO) {
-        val user = FirebaseFirestore.getInstance().collection("users").document(userId).get().await().toObject(User::class.java)
+        val user = database.collection("users").document(userId).get().await().toObject(User::class.java)
         var localUser = userRepository.getUserById(userId)
         if (localUser == null) {
             localUser = User(
