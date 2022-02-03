@@ -21,7 +21,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val groceryRepository: GroceryRepository,
     private val shoppingListRepository: ShoppingListRepository,
-    private val userRepository: UserRepository,
     private val auth: FirebaseAuth
 ) : ViewModel() {
     var selectedTab = MutableLiveData<Int>().apply {
@@ -64,34 +63,6 @@ class HomeViewModel @Inject constructor(
         swipedShoppingListId = shoppingList.id
         deleteGroceryJob = deleteGroceryFromDeletedShoppingList()
         deleteGroceryJob!!.start()
-    }
-
-    fun sendData() = viewModelScope.launch(Dispatchers.IO) {
-        val userId = auth.currentUser!!.uid
-
-        // get local data
-        val shoppingList = shoppingListRepository.getAllShoppingListForUser(userId)
-        val groceries = groceryRepository.getAllGroceryForUser(userId)
-
-        // create maps
-        val shoppingListMap: MutableMap<String, ShoppingList> = mutableMapOf()
-        val groceriesMap: MutableMap<String, Grocery> = mutableMapOf()
-
-        for (e in shoppingList) {
-            shoppingListMap[e.id.toString()] = e
-        }
-
-        for (e in groceries) {
-            groceriesMap[e.id.toString()] = e
-        }
-
-        // send local data
-        FirebaseFirestore.getInstance().collection("shoppinglists").document(userId).set(shoppingListMap).await()
-        FirebaseFirestore.getInstance().collection("grocery").document(userId).set(groceriesMap).await()
-
-        // update user changes date
-        FirebaseFirestore.getInstance().collection("users").document(userId).update("lastUpdate", Date()).await()
-        userRepository.updateSyncDate(userId)
     }
 
     val shoppingListFilteredByArchived = Transformations.switchMap(selectedTab) {
