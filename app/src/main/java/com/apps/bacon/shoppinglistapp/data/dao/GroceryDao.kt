@@ -12,9 +12,6 @@ interface GroceryDao {
     @Query("SELECT * FROM grocery WHERE shopping_list_id = :shoppingListId AND user_id = :userId")
     fun getGroceryOfDeletedShoppingList(shoppingListId: Long, userId: String): List<Grocery>
 
-    @Query("SELECT * FROM grocery WHERE user_id = :userId")
-    fun getAllForUser(userId: String): List<Grocery>
-
     @Query("SELECT EXISTS(SELECT * FROM grocery WHERE id = :groceryId)")
     fun isGroceryExists(groceryId: Long): Boolean
 

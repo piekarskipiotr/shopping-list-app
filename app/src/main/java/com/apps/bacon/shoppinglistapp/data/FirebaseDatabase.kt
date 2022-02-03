@@ -2,6 +2,7 @@ package com.apps.bacon.shoppinglistapp.data
 
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
+import com.apps.bacon.shoppinglistapp.data.entities.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,6 +15,10 @@ class FirebaseDatabase @Inject constructor(
     private val database: FirebaseFirestore,
     private val auth: FirebaseAuth
 ) {
+    suspend fun insert(user: User) {
+        database.collection("users").document(user.id).set(user).await()
+    }
+
     suspend fun insert(shoppingList: ShoppingList) {
         val userId = auth.currentUser!!.uid
         val shoppingListMap: MutableMap<String, ShoppingList> = mutableMapOf()
@@ -69,5 +74,11 @@ class FirebaseDatabase @Inject constructor(
         val userId = auth.currentUser!!.uid
         val doc = database.collection("grocery").document(userId)
         doc.update("${grocery.id}", grocery).await()
+    }
+
+    suspend fun update(user: User) {
+        val userId = auth.currentUser!!.uid
+        val doc = database.collection("users").document(userId)
+        doc.set(user).await()
     }
 }

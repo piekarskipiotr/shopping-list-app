@@ -61,7 +61,6 @@ class LoginViewModel @Inject constructor(
         if (shoppingList != null) {
             for (e in shoppingList) {
                 val sl = Mapper.mapShoppingList(e.value as Map<String, Any>)
-                println(sl.toString())
                 shoppingListRepository.insertOrUpdate(sl)
             }
         }

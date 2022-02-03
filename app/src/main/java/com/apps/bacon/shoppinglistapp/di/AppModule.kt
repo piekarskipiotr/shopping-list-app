@@ -82,8 +82,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserRepository(
-        database: AppDatabase
-    ) = UserRepository(database)
-
-
+        database: AppDatabase,
+        firebaseDatabase: FirebaseDatabase
+    ) = UserRepository(database, firebaseDatabase)
 }

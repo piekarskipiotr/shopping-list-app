@@ -2,6 +2,7 @@ package com.apps.bacon.shoppinglistapp.data.dao
 
 import androidx.room.*
 import com.apps.bacon.shoppinglistapp.data.entities.User
+import java.util.*
 
 @Dao
 interface UserDao {
