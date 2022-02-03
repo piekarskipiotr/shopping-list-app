@@ -3,6 +3,7 @@ package com.apps.bacon.shoppinglistapp.data.repository
 import com.apps.bacon.shoppinglistapp.data.AppDatabase
 import com.apps.bacon.shoppinglistapp.data.FirebaseDatabase
 import com.apps.bacon.shoppinglistapp.data.entities.Grocery
+import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import java.util.*
 import javax.inject.Inject
 
@@ -46,7 +47,23 @@ class GroceryRepository @Inject constructor(
             database.groceryDao().insert(grocery)
     }
 
-    suspend fun updateUserLastModificationDate(userId: String) {
+    suspend fun mergeFirebaseToLocal(firebaseList: List<Grocery>, userId: String) {
+        // delete local grocery that was deleted from other device or from server
+        val list = database.groceryDao().getGroceriesAllForUser(userId)
+        for (shoppingList in list)
+            if (!firebaseList.contains(shoppingList))
+                database.groceryDao().delete(shoppingList)
+
+        // merge data
+        for (grocery in firebaseList) {
+            if (database.groceryDao().isGroceryExists(grocery.id))
+                database.groceryDao().update(grocery)
+            else
+                database.groceryDao().insert(grocery)
+        }
+    }
+
+    private suspend fun updateUserLastModificationDate(userId: String) {
         val user = database.userDao().getUserById(userId)!!
         user.apply {
             lastUpdate = Date()

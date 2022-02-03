@@ -24,7 +24,7 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val shoppingListRepository: ShoppingListRepository,
     private val groceryRepository: GroceryRepository,
-    private val database: FirebaseFirestore,
+    private val firebaseDatabase: FirebaseFirestore,
     private val auth: FirebaseAuth
 ) : ViewModel() {
     var authResult = MutableLiveData<Any>().apply {
@@ -37,7 +37,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun checkNeedToUpdate(userId: String) = viewModelScope.launch(Dispatchers.IO) {
-        val user = database.collection("users").document(userId).get().await().toObject(User::class.java)
+        val user = firebaseDatabase.collection("users").document(userId).get().await().toObject(User::class.java)
         var localUser = userRepository.getUserById(userId)
         if (localUser == null) {
             localUser = User(
@@ -56,21 +56,27 @@ class LoginViewModel @Inject constructor(
 
     @Suppress("UNCHECKED_CAST")
     private suspend fun updateLocalDatabase(userId: String) {
-        val shoppingList = FirebaseFirestore.getInstance().collection("shoppinglists").document(userId).get().await().data
-        val groceries = FirebaseFirestore.getInstance().collection("grocery").document(userId).get().await().data
+        val shoppingList = firebaseDatabase.collection("shoppinglists").document(userId).get().await().data
+        val groceries = firebaseDatabase.collection("grocery").document(userId).get().await().data
 
         if (shoppingList != null) {
+            val slList = mutableListOf<ShoppingList>()
             for (e in shoppingList) {
                 val sl = Mapper.mapShoppingList(e.value as Map<String, Any>)
-                shoppingListRepository.insertOrUpdate(sl)
+                slList.add(sl)
             }
+
+            shoppingListRepository.mergeFirebaseToLocal(slList, userId)
         }
 
         if (groceries != null) {
+            val gList = mutableListOf<Grocery>()
             for (e in groceries) {
                 val g = Mapper.mapGrocery(e.value as Map<String, Any>)
-                groceryRepository.insertOrUpdate(g)
+                gList.add(g)
             }
+
+            groceryRepository.mergeFirebaseToLocal(gList, userId)
         }
     }
 

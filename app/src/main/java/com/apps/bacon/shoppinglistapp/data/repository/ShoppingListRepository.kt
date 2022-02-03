@@ -34,14 +34,23 @@ class ShoppingListRepository @Inject constructor(
         updateUserLastModificationDate(shoppingList.userId)
     }
 
-    suspend fun insertOrUpdate(shoppingList: ShoppingList) {
-        if (database.shoppingListDao().isShoppingListExists(shoppingList.id))
-            database.shoppingListDao().update(shoppingList)
-        else
-            database.shoppingListDao().insert(shoppingList)
+    suspend fun mergeFirebaseToLocal(firebaseList: List<ShoppingList>, userId: String) {
+        // delete local shopping list that was deleted from other device or from server
+        val list = database.shoppingListDao().getAllShoppingListForUser(userId)
+        for (shoppingList in list)
+            if (!firebaseList.contains(shoppingList))
+                database.shoppingListDao().delete(shoppingList)
+
+        // merge data
+        for (shoppingList in firebaseList) {
+            if (database.shoppingListDao().isShoppingListExists(shoppingList.id))
+                database.shoppingListDao().update(shoppingList)
+            else
+                database.shoppingListDao().insert(shoppingList)
+        }
     }
 
-    suspend fun updateUserLastModificationDate(userId: String) {
+    private suspend fun updateUserLastModificationDate(userId: String) {
         val user = database.userDao().getUserById(userId)!!
         user.apply {
             lastUpdate = Date()
