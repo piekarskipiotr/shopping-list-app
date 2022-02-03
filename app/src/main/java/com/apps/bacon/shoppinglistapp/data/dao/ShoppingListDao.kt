@@ -9,6 +9,9 @@ interface ShoppingListDao {
     @Query("SELECT * FROM shopping_list WHERE id = :shoppingListId AND user_id = :userId")
     fun getShoppingListById(shoppingListId: Long, userId: String): ShoppingList
 
+    @Query("SELECT * FROM shopping_list WHERE user_id = :userId")
+    fun getAllShoppingListForUser(userId: String): List<ShoppingList>
+
     //in room sql 0 stands for false and unarchived list of shopping lists is on tab at position 0
     @Query("SELECT * FROM shopping_list WHERE is_archived = :selectedTab AND user_id = :userId")
     fun getShoppingListsByArchivedStatus(selectedTab: Int, userId: String): LiveData<List<ShoppingList>>
