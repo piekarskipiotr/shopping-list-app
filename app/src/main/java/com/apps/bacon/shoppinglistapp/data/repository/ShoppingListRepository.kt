@@ -1,13 +1,15 @@
 package com.apps.bacon.shoppinglistapp.data.repository
 
 import com.apps.bacon.shoppinglistapp.data.AppDatabase
+import com.apps.bacon.shoppinglistapp.data.FirebaseDatabase
 import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 import javax.inject.Inject
 
 class ShoppingListRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val firebaseDatabase: FirebaseDatabase
 ) {
-    fun getShoppingListById(shoppingListId: Int, userId: String) =
+    fun getShoppingListById(shoppingListId: Long, userId: String) =
         database.shoppingListDao().getShoppingListById(shoppingListId, userId)
 
     fun getAllShoppingListForUser(userId: String) =
@@ -16,11 +18,20 @@ class ShoppingListRepository @Inject constructor(
     fun getShoppingListsByArchivedStatus(selectedTab: Int, userId: String) =
         database.shoppingListDao().getShoppingListsByArchivedStatus(selectedTab, userId)
 
-    suspend fun insert(shoppingList: ShoppingList) = database.shoppingListDao().insert(shoppingList)
+    suspend fun insert(shoppingList: ShoppingList) {
+        database.shoppingListDao().insert(shoppingList)
+        firebaseDatabase.insert(shoppingList)
+    }
 
-    suspend fun delete(shoppingList: ShoppingList) = database.shoppingListDao().delete(shoppingList)
+    suspend fun delete(shoppingList: ShoppingList) {
+        database.shoppingListDao().delete(shoppingList)
+        firebaseDatabase.delete(shoppingList)
+    }
 
-    suspend fun update(shoppingList: ShoppingList) = database.shoppingListDao().update(shoppingList)
+    suspend fun update(shoppingList: ShoppingList) {
+        database.shoppingListDao().update(shoppingList)
+        firebaseDatabase.update(shoppingList)
+    }
 
     suspend fun insertOrUpdate(shoppingList: ShoppingList) {
         if (database.shoppingListDao().isShoppingListExists(shoppingList.id))

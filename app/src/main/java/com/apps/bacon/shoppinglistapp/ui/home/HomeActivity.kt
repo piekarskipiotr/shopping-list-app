@@ -144,7 +144,7 @@ class HomeActivity : AppCompatActivity(), ShoppingListsAdapter.OnShoppingListCli
         }?.select()
     }
 
-    override fun onShoppingListClick(shoppingListId: Int, isArchived: Boolean) {
+    override fun onShoppingListClick(shoppingListId: Long, isArchived: Boolean) {
         intent = Intent(this, GroceryActivity::class.java)
         intent.putExtra(shoppingListIdKey, shoppingListId)
         intent.putExtra(isShoppingListArchivedKey, isArchived)

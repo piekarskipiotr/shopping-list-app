@@ -7,19 +7,19 @@ import com.apps.bacon.shoppinglistapp.data.entities.Grocery
 @Dao
 interface GroceryDao {
     @Query("SELECT * FROM grocery WHERE shopping_list_id = :shoppingListId AND user_id = :userId ORDER BY is_done = 1")
-    fun getGroceryForShoppingList(shoppingListId: Int, userId: String): LiveData<List<Grocery>>
+    fun getGroceryForShoppingList(shoppingListId: Long, userId: String): LiveData<List<Grocery>>
 
     @Query("SELECT * FROM grocery WHERE shopping_list_id = :shoppingListId AND user_id = :userId")
-    fun getGroceryOfDeletedShoppingList(shoppingListId: Int, userId: String): List<Grocery>
+    fun getGroceryOfDeletedShoppingList(shoppingListId: Long, userId: String): List<Grocery>
 
     @Query("SELECT * FROM grocery WHERE user_id = :userId")
     fun getAllForUser(userId: String): List<Grocery>
 
     @Query("SELECT EXISTS(SELECT * FROM grocery WHERE id = :groceryId)")
-    fun isGroceryExists(groceryId: Int): Boolean
+    fun isGroceryExists(groceryId: Long): Boolean
 
     @Transaction
-    suspend fun deleteGroceryFromDeletedShoppingList(shoppingListId: Int, userId: String) {
+    suspend fun deleteGroceryFromDeletedShoppingList(shoppingListId: Long, userId: String) {
         val list = getGroceryOfDeletedShoppingList(shoppingListId, userId)
         for (grocery in list) {
             delete(grocery)

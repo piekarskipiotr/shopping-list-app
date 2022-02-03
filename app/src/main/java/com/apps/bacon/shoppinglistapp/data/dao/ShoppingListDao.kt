@@ -7,7 +7,7 @@ import com.apps.bacon.shoppinglistapp.data.entities.ShoppingList
 @Dao
 interface ShoppingListDao {
     @Query("SELECT * FROM shopping_list WHERE id = :shoppingListId AND user_id = :userId")
-    fun getShoppingListById(shoppingListId: Int, userId: String): ShoppingList
+    fun getShoppingListById(shoppingListId: Long, userId: String): ShoppingList
 
     @Query("SELECT * FROM shopping_list WHERE user_id = :userId")
     fun getAllShoppingListForUser(userId: String): List<ShoppingList>
@@ -17,7 +17,7 @@ interface ShoppingListDao {
     fun getShoppingListsByArchivedStatus(selectedTab: Int, userId: String): LiveData<List<ShoppingList>>
 
     @Query("SELECT EXISTS(SELECT * FROM shopping_list WHERE id = :shoppingListId)")
-    fun isShoppingListExists(shoppingListId: Int): Boolean
+    fun isShoppingListExists(shoppingListId: Long): Boolean
 
     @Insert
     suspend fun insert(shoppingList: ShoppingList)

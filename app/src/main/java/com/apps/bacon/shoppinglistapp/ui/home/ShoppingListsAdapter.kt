@@ -45,7 +45,7 @@ class ShoppingListsAdapter constructor(
     }
 
     interface OnShoppingListClickListener {
-        fun onShoppingListClick(shoppingListId: Int, isArchived: Boolean)
+        fun onShoppingListClick(shoppingListId: Long, isArchived: Boolean)
     }
 
     companion object : DiffUtil.ItemCallback<ShoppingList>() {

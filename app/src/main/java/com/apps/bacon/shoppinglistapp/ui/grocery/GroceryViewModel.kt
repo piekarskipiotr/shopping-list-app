@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,28 +18,28 @@ class GroceryViewModel @Inject constructor(
     private val groceryRepository: GroceryRepository,
     private val shoppingListRepository: ShoppingListRepository
 ) : ViewModel() {
-    fun getShoppingList(shoppingListId: Int) = shoppingListRepository.getShoppingListById(shoppingListId, FirebaseAuth.getInstance().currentUser!!.uid)
+    fun getShoppingList(shoppingListId: Long) = shoppingListRepository.getShoppingListById(shoppingListId, FirebaseAuth.getInstance().currentUser!!.uid)
 
-    fun getGroceryForShoppingList(shoppingListId: Int) = groceryRepository.getGroceryForShoppingList(shoppingListId, FirebaseAuth.getInstance().currentUser!!.uid)
+    fun getGroceryForShoppingList(shoppingListId: Long) = groceryRepository.getGroceryForShoppingList(shoppingListId, FirebaseAuth.getInstance().currentUser!!.uid)
 
-    private fun updateShoppingList(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+    private fun updateShoppingList(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.IO) {
         shoppingListRepository.update(shoppingList)
     }
 
-    fun insertNewGrocery(groceryName: String, amount: Int, shoppingListId: Int) = viewModelScope.launch(Dispatchers.Default) {
+    fun insertNewGrocery(groceryName: String, amount: Int, shoppingListId: Long) = viewModelScope.launch(Dispatchers.IO) {
         val grocery =
             Grocery(
-                0,
+                Date().time,
                 groceryName,
                 amount,
                 false,
                 shoppingListId,
-                FirebaseAuth.getInstance().currentUser!!.uid
+                FirebaseAuth.getInstance().currentUser!!.uid,
             )
         groceryRepository.insert(grocery)
     }
 
-    private fun updateGrocery(grocery: Grocery) = viewModelScope.launch(Dispatchers.Default) {
+    private fun updateGrocery(grocery: Grocery) = viewModelScope.launch(Dispatchers.IO) {
         groceryRepository.update(grocery)
     }
 
@@ -77,12 +78,12 @@ class GroceryViewModel @Inject constructor(
         updateShoppingList(shoppingList)
     }
 
-    fun deleteGroceryOnSwipe(grocery: Grocery, shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+    fun deleteGroceryOnSwipe(grocery: Grocery, shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.IO) {
         groceryRepository.delete(grocery)
         updateShoppingListOnGrocerySwipe(shoppingList, true, grocery.isDone)
     }
 
-    fun undoDeletedGrocery(grocery: Grocery, shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+    fun undoDeletedGrocery(grocery: Grocery, shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.IO) {
         groceryRepository.insert(grocery)
         updateShoppingListOnGrocerySwipe(shoppingList, false, !grocery.isDone)
     }

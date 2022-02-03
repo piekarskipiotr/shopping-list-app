@@ -7,9 +7,9 @@ import java.util.*
 
 @Entity(tableName = "shopping_list")
 data class ShoppingList(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "id")
-    var id: Int,
+    var id: Long,
 
     @ColumnInfo(name = "name")
     var name: String,
@@ -24,7 +24,7 @@ data class ShoppingList(
     var isArchived: Boolean,
 
     @ColumnInfo(name = "user_id")
-    var userId: String
+    var userId: String,
 ) {
-    constructor() : this(0, "", 0, 0, false, "")
+    constructor() : this(Date().time, "", 0, 0, false, "")
 }

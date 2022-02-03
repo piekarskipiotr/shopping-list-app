@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.apps.bacon.shoppinglistapp.ui.home.HomeActivity
 import com.apps.bacon.shoppinglistapp.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
 
         intent = if (currentUser != null)

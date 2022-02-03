@@ -25,7 +25,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
     private lateinit var groceryAdapter: GroceryAdapter
     private lateinit var shoppingList: ShoppingList
     private val groceryViewModel: GroceryViewModel by viewModels()
-    private var shoppingListId by Delegates.notNull<Int>()
+    private var shoppingListId by Delegates.notNull<Long>()
     private var isShoppingListIdArchived by Delegates.notNull<Boolean>()
 
     @Inject
@@ -41,7 +41,7 @@ class GroceryActivity : AppCompatActivity(), GroceryAdapter.OnGroceryClickListen
         val view = binding.root
         setContentView(view)
         //get extras
-        shoppingListId = intent.extras!!.getInt(shoppingListIdKey)
+        shoppingListId = intent.extras!!.getLong(shoppingListIdKey)
         isShoppingListIdArchived = intent.extras!!.getBoolean(isShoppingListArchivedKey)
 
         initRecyclerView(isShoppingListIdArchived)

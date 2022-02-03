@@ -7,9 +7,9 @@ import java.util.*
 
 @Entity(tableName = "grocery")
 data class Grocery(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "id")
-    var id: Int,
+    var id: Long,
 
     @ColumnInfo(name = "name")
     var name: String,
@@ -21,10 +21,10 @@ data class Grocery(
     var isDone: Boolean,
 
     @ColumnInfo(name = "shopping_list_id")
-    var shoppingListId: Int,
+    var shoppingListId: Long,
 
     @ColumnInfo(name = "user_id")
-    var userId: String
+    var userId: String,
 ) {
-    constructor() : this(0, "", 0, false, 0,"")
+    constructor() : this(Date().time, "", 0, false, 0,"")
 }

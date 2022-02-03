@@ -21,7 +21,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val groceryRepository: GroceryRepository,
     private val shoppingListRepository: ShoppingListRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val auth: FirebaseAuth
 ) : ViewModel() {
     var selectedTab = MutableLiveData<Int>().apply {
         //init value on start
@@ -34,30 +35,30 @@ class HomeViewModel @Inject constructor(
 
     fun insertNewShoppingList(shoppingListName: String) = viewModelScope.launch(Dispatchers.IO) {
         val shoppingList = ShoppingList(
-            0,
+            Date().time,
             shoppingListName,
             0,
             0,
             false,
-            FirebaseAuth.getInstance().currentUser!!.uid
+            auth.currentUser!!.uid,
         )
         shoppingListRepository.insert(shoppingList)
     }
 
-    private var swipedShoppingListId: Int = -1
+    private var swipedShoppingListId: Long = -1L
     private var deleteGroceryJob: Job? = null
 
-    private fun deleteGroceryFromDeletedShoppingList() = viewModelScope.launch(Dispatchers.Default) {
+    private fun deleteGroceryFromDeletedShoppingList() = viewModelScope.launch(Dispatchers.IO) {
         delay(3000)
-        groceryRepository.deleteGroceryFromDeletedShoppingList(swipedShoppingListId, FirebaseAuth.getInstance().currentUser!!.uid)
+        groceryRepository.deleteGroceryFromDeletedShoppingList(swipedShoppingListId, auth.currentUser!!.uid)
     }
 
-    fun undoDeletedShoppingList(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+    fun undoDeletedShoppingList(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.IO) {
         shoppingListRepository.insert(shoppingList)
         deleteGroceryJob!!.cancel()
     }
 
-    fun deleteShoppingListOnSwipe(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.Default) {
+    fun deleteShoppingListOnSwipe(shoppingList: ShoppingList) = viewModelScope.launch(Dispatchers.IO) {
         shoppingListRepository.delete(shoppingList)
 
         swipedShoppingListId = shoppingList.id
@@ -66,7 +67,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun sendData() = viewModelScope.launch(Dispatchers.IO) {
-        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        val userId = auth.currentUser!!.uid
 
         // get local data
         val shoppingList = shoppingListRepository.getAllShoppingListForUser(userId)
@@ -94,6 +95,6 @@ class HomeViewModel @Inject constructor(
     }
 
     val shoppingListFilteredByArchived = Transformations.switchMap(selectedTab) {
-        shoppingListRepository.getShoppingListsByArchivedStatus(it, FirebaseAuth.getInstance().currentUser!!.uid)
+        shoppingListRepository.getShoppingListsByArchivedStatus(it, auth.currentUser!!.uid)
     }
 }

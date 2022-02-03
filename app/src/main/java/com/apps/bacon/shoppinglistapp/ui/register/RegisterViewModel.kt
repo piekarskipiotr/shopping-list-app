@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val auth: FirebaseAuth
 ) : ViewModel() {
     var authResult = MutableLiveData<Any>().apply {
         //init value on start
@@ -44,7 +45,6 @@ class RegisterViewModel @Inject constructor(
     }
 
     private suspend fun createUser(email: String, password: String): Any {
-        val auth = FirebaseAuth.getInstance()
         return try {
             auth.createUserWithEmailAndPassword(email, password).await()
         } catch (e: Exception) {
